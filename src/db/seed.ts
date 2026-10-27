@@ -134,3 +134,47 @@ export async function seed(db: DB) {
     { code: "school", name: "Maktab", audience: "school", priceUzs: 59000, periodDays: 30, priceNote: "/ oʻqituvchi / oy", features: ["Kamida 10 ta oʻqituvchi", "Jamoa natijalari hisoboti", "Barcha fanlar"], sort: 7 },
   ]);
 }
+
+/** Extra demo tests. Runs once per database (guarded by a settings flag), also on databases created before it existed. */
+export async function seedExtra(db: DB) {
+  const [done] = await db.select().from(s.settings).where(sql`${s.settings.key} = 'seed_v2'`);
+  if (done) return;
+  const find = async (exam: string, subject: string) => {
+    const rows = await db
+      .select({ id: s.subjects.id })
+      .from(s.subjects)
+      .innerJoin(s.examTypes, sql`${s.examTypes.id} = ${s.subjects.examTypeId}`)
+      .where(sql`${s.examTypes.slug} = ${exam} and ${s.subjects.slug} = ${subject}`);
+    return rows[0]?.id;
+  };
+  type Q = [string, string[], number, string];
+  const make = async (subjectId: number | undefined, title: string, description: string, durationMin: number, qs: Q[]) => {
+    if (!subjectId) return;
+    const [t] = await db.insert(s.tests).values({ subjectId, title, description, durationMin, isFree: true, isPublished: true, sort: 1 }).returning();
+    await db.insert(s.questions).values(qs.map(([text, options, correctIndex, topic], i) => ({ testId: t.id, position: i + 1, text, options, correctIndex, topic })));
+  };
+
+  await make(await find("attestatsiya", "fizika"), "Fizika · demo №1", "Mexanika, elektr va optikadan qisqa demo test.", 10, [
+    ["Jism 10 m/s tezlik bilan 5 s davomida tekis harakatlandi. U qancha yoʻl bosdi?", ["2 m", "15 m", "50 m", "5 m"], 2, "Kinematika"],
+    ["Nyutonning ikkinchi qonuni formulasi qaysi?", ["F = m / a", "F = m · a", "F = m + a", "F = a / m"], 1, "Dinamika"],
+    ["Suv normal atmosfera bosimida necha °C da qaynaydi?", ["100 °C", "90 °C", "120 °C", "0 °C"], 0, "Issiqlik hodisalari"],
+    ["Zanjir uchastkasida kuchlanish 12 V, qarshilik 4 Ω. Tok kuchini toping.", ["48 A", "8 A", "3 A", "0,33 A"], 2, "Elektr toki"],
+    ["Yorugʻlikning vakuumdagi tezligi taxminan qancha?", ["3·10⁶ m/s", "3·10⁸ m/s", "3·10⁵ m/s", "3·10¹⁰ m/s"], 1, "Optika"],
+    ["Massasi 2 kg boʻlgan jism 3 m/s tezlik bilan harakatlanmoqda. Uning kinetik energiyasi qancha?", ["6 J", "9 J", "18 J", "3 J"], 1, "Energiya"],
+  ]);
+  await make(await find("attestatsiya", "ingliz-tili"), "Ingliz tili · demo №1", "Grammatika: zamonlar, sifat darajalari, shart gaplar.", 10, [
+    ["She ___ to school every day.", ["go", "goes", "going", "gone"], 1, "Present Simple"],
+    ["I have lived here ___ 2015.", ["since", "for", "from", "during"], 0, "Present Perfect"],
+    ["Choose the past form of “write”.", ["wrote", "writed", "written", "writes"], 0, "Irregular verbs"],
+    ["If it rains tomorrow, we ___ at home.", ["will stay", "would stay", "stayed", "stay"], 0, "Conditionals"],
+    ["He is ___ than his brother.", ["tall", "taller", "tallest", "more tall"], 1, "Comparatives"],
+  ]);
+  await make(await find("milliy-sertifikat", "informatika"), "Informatika · demo №1", "Axborot oʻlchov birliklari, sanoq sistemalari va asosiy tushunchalar.", 8, [
+    ["1 bayt necha bitga teng?", ["4", "8", "16", "10"], 1, "Axborot birliklari"],
+    ["Ikkilik sanoq sistemasidagi 101 sonining oʻnlik koʻrinishi qaysi?", ["3", "4", "5", "6"], 2, "Sanoq sistemalari"],
+    ["Kompyuterdagi CPU qisqartmasi nimani anglatadi?", ["Operativ xotira", "Markaziy protsessor", "Videokarta", "Qattiq disk"], 1, "Kompyuter qurilmalari"],
+    ["1 kilobayt necha baytga teng?", ["1000", "1024", "512", "2048"], 1, "Axborot birliklari"],
+    ["HTML nima?", ["Veb-sahifalarni belgilash tili", "Maʼlumotlar bazasi", "Operatsion tizim", "Brauzer"], 0, "Internet"],
+  ]);
+  await db.insert(s.settings).values({ key: "seed_v2", value: "1" });
+}

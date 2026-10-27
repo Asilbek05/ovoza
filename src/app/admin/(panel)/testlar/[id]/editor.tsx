@@ -2,9 +2,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowDown, ArrowUp, AudioLines, Check, ImageIcon, Pencil, Plus, Sparkles, Trash2, Upload, Shuffle } from "lucide-react";
+import { ArrowDown, ArrowUp, AudioLines, Check, ImageIcon, Pencil, Plus, Sparkles, Trash2, Upload, Shuffle, Copy, ExternalLink } from "lucide-react";
 import type { ExamType, Question, Subject, Test } from "@/db/schema";
-import { deleteQuestion, deleteTest, moveQuestion, saveQuestion, saveTest } from "../../../actions";
+import { deleteQuestion, deleteTest, duplicateTest, moveQuestion, saveQuestion, saveTest } from "../../../actions";
 import { useRun } from "@/components/admin/use-run";
 import { Button } from "@/components/ui/button";
 import { Badge, Card, EmptyState } from "@/components/ui/misc";
@@ -122,6 +122,10 @@ export function TestEditor({ test, examTypes, subjects, questions, status }: { t
           <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">Bepul <Switch checked={meta.isFree} onCheckedChange={(v) => setMeta({ ...meta, isFree: v })} /></label>
           <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">Saytda chop etilgan <Switch checked={meta.isPublished} onCheckedChange={(v) => setMeta({ ...meta, isPublished: v })} /></label>
           <Button className="w-full" disabled={pending} onClick={() => run(() => saveTest({ id: test.id, ...meta, subjectId: Number(meta.subjectId) }), "Saqlandi")}>Saqlash</Button>
+          <div className="grid grid-cols-2 gap-2">
+            <Button variant="outline" disabled={pending} onClick={async () => { const r = await run(() => duplicateTest(test.id), "Nusxa yaratildi"); if (r.ok && r.data) router.push(`/admin/testlar/${r.data.id}`); }}><Copy /> Nusxalash</Button>
+            <Button asChild variant="outline"><a href={`/test/${test.id}`} target="_blank" rel="noopener noreferrer"><ExternalLink /> Saytda</a></Button>
+          </div>
         </Card>
         <Confirm
           title="Testni oʻchirasizmi?"

@@ -72,6 +72,15 @@ export async function getAttemptReview(attemptId: string, userId: string | null)
   const full = userId ? await hasFullAccess(userId) : false;
   const openAll = !!userId && (full || !test.isFree);
 
+  const rows = qs.map((q, i) => {
+    const ans = answers.find((x) => x.questionId === q.id);
+    return {
+      questionId: q.id, number: i + 1, text: q.text, options: q.options, correctIndex: q.correctIndex, topic: q.topic,
+      selectedIndex: ans?.selectedIndex ?? null, isCorrect: !!ans?.isCorrect, isGuess: !!ans?.isGuess, flagged: !!ans?.flagged, timeSec: ans?.timeSpentSec ?? 0,
+    };
+  });
+  const totalSec = rows.reduce((n, r) => n + r.timeSec, 0);
+
   const topics = new Map<string, { correct: number; total: number }>();
   const items: ReviewItem[] = [];
   let guesses = 0;
@@ -98,7 +107,7 @@ export async function getAttemptReview(attemptId: string, userId: string | null)
   items.forEach((it, i) => { it.unlocked = !!userId && (openAll || i < FREE_EXPLANATIONS); });
 
   return {
-    attempt: a, test, subject, exam, questions: qs, answers, items, guesses, openAll, loggedIn: !!userId,
+    attempt: a, test, subject, exam, questions: qs, answers, items, rows, totalSec, guesses, openAll, loggedIn: !!userId,
     topics: [...topics.entries()].map(([name, v]) => ({ name, ...v })).sort((x, y) => x.correct / x.total - y.correct / y.total),
   };
 }

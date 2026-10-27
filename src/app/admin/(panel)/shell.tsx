@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { BookOpen, CreditCard, FileStack, GraduationCap, LayoutDashboard, LogOut, Menu, Tags, Users, ExternalLink } from "lucide-react";
+import { BookOpen, CreditCard, FileStack, GraduationCap, LayoutDashboard, LogOut, Menu, Tags, Users, ExternalLink, MessageSquareWarning, Settings } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { adminLogout } from "../actions";
@@ -16,6 +16,8 @@ const NAV = [
   { href: "/admin/tariflar", label: "Tariflar", icon: Tags },
   { href: "/admin/foydalanuvchilar", label: "Foydalanuvchilar", icon: Users },
   { href: "/admin/tolovlar", label: "Toʻlovlar", icon: CreditCard },
+  { href: "/admin/fikrlar", label: "Tushunmadim", icon: MessageSquareWarning },
+  { href: "/admin/sozlamalar", label: "Sozlamalar", icon: Settings },
 ];
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {

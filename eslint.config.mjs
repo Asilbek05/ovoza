@@ -6,5 +6,7 @@ const compat = new FlatCompat({ baseDirectory: dirname(fileURLToPath(import.meta
 
 export default [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // CSV export links are file downloads from route handlers, not pages
+  { files: ["src/app/admin/**/*.tsx"], rules: { "@next/next/no-html-link-for-pages": "off" } },
   { ignores: [".next/**", "node_modules/**", ".pglite/**"] },
 ];

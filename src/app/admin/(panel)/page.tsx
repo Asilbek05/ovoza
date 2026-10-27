@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { desc, eq, sql } from "drizzle-orm";
-import { AudioLines, FileStack, HelpCircle, Users, ArrowRight } from "lucide-react";
+import { AudioLines, FileStack, HelpCircle, Users, ArrowRight, Wallet, ClipboardCheck } from "lucide-react";
 import { getDb, schema as s } from "@/db";
 import { PageHeader } from "./shell";
 import { Badge, Card, Table, Td, Th } from "@/components/ui/misc";
@@ -43,11 +43,29 @@ export default async function Dashboard() {
     .orderBy(desc(s.orders.createdAt))
     .limit(5);
 
+  const days = await db.execute(sql`
+    select to_char(d, 'DD.MM') as label,
+      (select count(*)::int from attempts a where a.finished_at::date = d) as attempts,
+      (select count(*)::int from users u where u.created_at::date = d) as signups
+    from generate_series(current_date - 13, current_date, interval '1 day') d
+    order by d`);
+  const activity = (days as unknown as { rows?: { label: string; attempts: number; signups: number }[] }).rows ?? (days as unknown as { label: string; attempts: number; signups: number }[]);
+  const maxA = Math.max(1, ...activity.map((x) => Number(x.attempts)));
+  const [revenue, pendingN, attemptsAll] = await Promise.all([
+    db.select({ v: sql<number>`coalesce(sum(${s.orders.amountUzs}), 0)::int` }).from(s.orders).where(eq(s.orders.status, "paid")).then((r) => r[0].v),
+    db.select({ n }).from(s.orders).where(eq(s.orders.status, "pending")).then((r) => r[0].n),
+    db.select({ n }).from(s.attempts).where(sql`${s.attempts.finishedAt} is not null`).then((r) => r[0].n),
+  ]);
+
   const stats = [
     { label: "Foydalanuvchilar", value: users, icon: Users, tone: "bg-primary-soft text-primary" },
     { label: "Testlar", value: tests, icon: FileStack, tone: "bg-accent-soft text-accent-ink" },
     { label: "Savollar", value: questions, icon: HelpCircle, tone: "bg-success-soft text-success-ink" },
     { label: "Audiosiz savollar", value: missing, icon: AudioLines, tone: "bg-danger-soft text-danger-ink" },
+  ];
+  const stats2 = [
+    { label: "Yechilgan testlar", value: attemptsAll, icon: ClipboardCheck, tone: "bg-primary-soft text-primary" },
+    { label: "Tushum", value: revenue ? formatPrice(revenue) : "0 soʻm", icon: Wallet, tone: "bg-success-soft text-success-ink" },
   ];
 
   return (
@@ -64,6 +82,38 @@ export default async function Dashboard() {
           </Card>
         ))}
       </div>
+
+      <div className="mt-3 grid grid-cols-2 gap-3">
+        {stats2.map(({ label, value, icon: Icon, tone }) => (
+          <Card key={label} className="flex items-center gap-4 p-5">
+            <span className={`flex size-11 shrink-0 items-center justify-center rounded-2xl ${tone}`}><Icon className="size-5" /></span>
+            <span><span className="block font-display text-2xl leading-none font-extrabold sm:text-[28px]">{value}</span><span className="mt-1 block text-sm font-semibold text-muted">{label}</span></span>
+          </Card>
+        ))}
+      </div>
+      {pendingN > 0 ? (
+        <Link href="/admin/tolovlar" className="mt-3 flex items-center justify-between gap-3 rounded-[24px] border-2 border-accent bg-accent-soft px-5 py-4 font-semibold transition hover:bg-[#fff0b8]">
+          <span>{pendingN} ta buyurtma toʻlovni kutmoqda</span><span className="flex items-center gap-1 text-primary">Koʻrish <ArrowRight className="size-4" /></span>
+        </Link>
+      ) : null}
+
+      <Card className="mt-5 p-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="font-display text-xl font-bold">Oxirgi 14 kun</h2>
+          <span className="flex gap-4 text-[13px] font-semibold text-muted"><span className="flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-primary" /> yakunlangan testlar</span><span className="flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-accent" /> yangi foydalanuvchilar</span></span>
+        </div>
+        <div role="img" aria-label="Oxirgi 14 kundagi faollik grafigi" className="mt-5 flex h-36 items-end gap-1.5 sm:gap-2.5">
+          {activity.map((d) => (
+            <div key={d.label} className="group relative flex h-full flex-1 flex-col justify-end" title={`${d.label}: ${d.attempts} test, ${d.signups} yangi`}>
+              <div className="flex items-end justify-center gap-0.5" style={{ height: "100%" }}>
+                <span className="w-full max-w-4 rounded-t-md bg-primary" style={{ height: `${Math.max(Number(d.attempts) ? 8 : 3, (Number(d.attempts) / maxA) * 100)}%`, opacity: Number(d.attempts) ? 1 : 0.25 }} />
+                <span className="w-full max-w-4 rounded-t-md bg-accent" style={{ height: `${Math.max(Number(d.signups) ? 8 : 3, (Number(d.signups) / maxA) * 100)}%`, opacity: Number(d.signups) ? 1 : 0.25 }} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-2 flex gap-1.5 sm:gap-2.5">{activity.map((d, i) => <span key={d.label} className={`flex-1 text-center text-[10px] font-semibold text-muted sm:text-[11px] ${i % 2 ? "hidden sm:block" : ""}`}>{d.label}</span>)}</div>
+      </Card>
 
       <div className="mt-5 grid gap-5 xl:grid-cols-[1.4fr_1fr]">
         <Card className="p-6">

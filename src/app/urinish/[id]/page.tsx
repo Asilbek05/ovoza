@@ -29,7 +29,7 @@ export default async function AttemptPage({ params }: { params: Promise<{ id: st
       subtitle={`${row.sub} · ${row.exam}`}
       secondsLeft={Math.max(0, Math.floor((deadline - Date.now()) / 1000))}
       questions={qs.map((q) => ({ id: q.id, text: q.text, options: q.options, topic: q.topic }))}
-      initial={Object.fromEntries(answers.map((x) => [x.questionId, { selected: x.selectedIndex, guess: x.isGuess }]))}
+      initial={Object.fromEntries(answers.map((x) => [x.questionId, { selected: x.selectedIndex, guess: x.isGuess, flagged: x.flagged }]))}
     />
   );
 }

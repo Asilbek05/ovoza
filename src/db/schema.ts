@@ -107,6 +107,8 @@ export const attemptAnswers = pgTable(
     selectedIndex: integer("selected_index"),
     isGuess: boolean("is_guess").notNull().default(false),
     isCorrect: boolean("is_correct").notNull().default(false),
+    timeSpentSec: integer("time_spent_sec").notNull().default(0),
+    flagged: boolean("flagged").notNull().default(false),
   },
   (t) => [primaryKey({ columns: [t.attemptId, t.questionId] })],
 );
@@ -154,7 +156,14 @@ export const orders = pgTable("orders", {
   amountUzs: integer("amount_uzs").notNull(),
   provider: text("provider").notNull().default("manual"),
   status: text("status").notNull().default("pending"),
+  note: text("note").notNull().default(""),
+  paidAt: timestamp("paid_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const settings = pgTable("settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull().default(""),
 });
 
 export type ExamType = typeof examTypes.$inferSelect;

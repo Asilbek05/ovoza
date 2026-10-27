@@ -30,6 +30,10 @@
   --shadow-float: 0 40px 80px -40px rgb(22 58 158 / 0.45);
 
   --animate-wave: wave 1.1s ease-in-out infinite;
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
   @keyframes wave {
     0%, 100% { transform: scaleY(0.55); }
     50% { transform: scaleY(1); }
@@ -55,3 +59,7 @@
 @utility logo-bubble { border-radius: 14px 14px 14px 4px; }
 @utility container-page { width: 100%; max-width: 1240px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
 @utility marker { background: var(--color-accent); padding: 0 0.35em; border-radius: 0.4em; display: inline-block; transform: rotate(-1.5deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

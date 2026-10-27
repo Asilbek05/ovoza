@@ -50,3 +50,17 @@ export const SUBJECT_COLOR_NAMES: Record<SubjectColor, string> = {
   violet: "Binafsha",
   teal: "Feruza",
 };
+
+export function scoreLevel(pct: number) {
+  if (pct >= 86) return { label: "Aʼlo", tone: "bg-success-soft text-success-ink", note: "Juda yaxshi natija. Qolgan xatolarni ham koʻrib chiqing." };
+  if (pct >= 70) return { label: "Yaxshi", tone: "bg-primary-soft text-primary-deep", note: "Yaxshi tayyorgarlik. Zaif mavzularni mustahkamlang." };
+  if (pct >= 50) return { label: "Oʻrtacha", tone: "bg-accent-soft text-accent-ink", note: "Xatolaringiz tahlili natijani tez oshiradi." };
+  return { label: "Past", tone: "bg-danger-soft text-danger-ink", note: "Xavotir olmang — har bir xatoni tinglab chiqing, keyin qayta yeching." };
+}
+
+export function formatClock(sec: number) {
+  const s = Math.max(0, Math.round(sec));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  return h ? `${h} soat ${m} daq` : m ? `${m} daq ${s % 60} s` : `${s} s`;
+}

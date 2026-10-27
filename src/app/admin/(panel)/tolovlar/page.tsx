@@ -1,5 +1,6 @@
 import { desc, eq } from "drizzle-orm";
-import { CreditCard } from "lucide-react";
+import { CreditCard, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { getDb, schema as s } from "@/db";
 import { PageHeader } from "../shell";
 import { Badge, Card, EmptyState, Table, Td, Th } from "@/components/ui/misc";
@@ -17,9 +18,21 @@ export default async function OrdersPage() {
     .innerJoin(s.plans, eq(s.plans.id, s.orders.planId))
     .orderBy(desc(s.orders.createdAt))
     .limit(300);
+  const paid = rows.filter((r) => r.o.status === "paid");
+  const revenue = paid.reduce((n, r) => n + r.o.amountUzs, 0);
+  const pending = rows.filter((r) => r.o.status === "pending");
   return (
     <>
-      <PageHeader title="Toʻlovlar" description="Click va Payme ulanmaguncha buyurtmalar «kutilmoqda» holatida tushadi. Pul kelganini tekshirib, «Toʻlandi» ni bosing — obuna avtomatik ochiladi." />
+      <PageHeader
+        title="Toʻlovlar"
+        description="Click va Payme ulanmaguncha buyurtmalar «kutilmoqda» holatida tushadi. Pul kelganini tekshirib, «Toʻlandi» ni bosing — obuna avtomatik ochiladi."
+        actions={<Button asChild variant="outline"><a href="/admin/export/orders" download><Download /> CSV</a></Button>}
+      />
+      <div className="mb-5 grid grid-cols-3 gap-3">
+        <Card className="p-5"><span className="block text-sm font-semibold text-muted">Tushum</span><span className="mt-1 block font-display text-2xl font-extrabold sm:text-3xl">{formatPrice(revenue)}</span></Card>
+        <Card className="p-5"><span className="block text-sm font-semibold text-muted">Toʻlangan</span><span className="mt-1 block font-display text-2xl font-extrabold sm:text-3xl">{paid.length}</span></Card>
+        <Card className={`p-5 ${pending.length ? "border-accent bg-accent-soft" : ""}`}><span className="block text-sm font-semibold text-muted">Kutilmoqda</span><span className="mt-1 block font-display text-2xl font-extrabold sm:text-3xl">{pending.length}</span></Card>
+      </div>
       {rows.length === 0 ? (
         <EmptyState icon={<CreditCard className="size-6" />} title="Hali buyurtma yoʻq" text="Foydalanuvchi tarif tanlaganda shu yerda paydo boʻladi." />
       ) : (

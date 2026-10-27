@@ -1,9 +1,12 @@
 import { desc, eq, ilike, or, sql } from "drizzle-orm";
-import { Users } from "lucide-react";
+import { Download, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { getDb, schema as s } from "@/db";
 import { PageHeader } from "../shell";
 import { Card, EmptyState, Table, Td, Th, Badge } from "@/components/ui/misc";
 import { UserActions, SearchBox } from "./client";
+
+const like = (v: string) => v.replace(/[\\%_]/g, "\\$&");
 
 export const metadata = { title: "Foydalanuvchilar" };
 
@@ -18,13 +21,13 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
       subEnds: sql<string | null>`(select x.ends_at::text from subscriptions x where x.user_id = "users"."id" and x.status = 'active' and (x.ends_at is null or x.ends_at > now()) order by x.starts_at desc limit 1)`,
     })
     .from(s.users)
-    .where(q ? or(ilike(s.users.name, `%${q}%`), ilike(s.users.phone, `%${q.replace(/\D/g, "") || q}%`)) : undefined)
+    .where(q ? or(ilike(s.users.name, `%${like(q)}%`), ilike(s.users.phone, `%${like(q.replace(/\D/g, "") || q)}%`)) : undefined)
     .orderBy(desc(s.users.createdAt))
     .limit(200);
   const plans = await db.select().from(s.plans).where(eq(s.plans.isActive, true)).orderBy(s.plans.sort);
   return (
     <>
-      <PageHeader title="Foydalanuvchilar" description="Obunani qoʻlda berish — masalan, naqd yoki bank orqali toʻlaganlarga." />
+      <PageHeader title="Foydalanuvchilar" description="Obunani qoʻlda berish — masalan, naqd yoki bank orqali toʻlaganlarga." actions={<Button asChild variant="outline"><a href="/admin/export/users" download><Download /> CSV</a></Button>} />
       <SearchBox initial={q ?? ""} />
       {users.length === 0 ? (
         <EmptyState icon={<Users className="size-6" />} title={q ? "Hech kim topilmadi" : "Hali foydalanuvchi yoʻq"} text={q ? "Boshqa ism yoki raqam bilan qidiring." : "Saytda roʻyxatdan oʻtganlar shu yerda chiqadi."} />

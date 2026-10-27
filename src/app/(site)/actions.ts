@@ -111,19 +111,26 @@ export async function startAttempt(testId: number) {
   redirect(`/urinish/${a.id}`);
 }
 
-export async function saveAnswer(attemptId: string, questionId: number, selectedIndex: number | null, isGuess: boolean) {
-  if (selectedIndex !== null && (!Number.isInteger(selectedIndex) || selectedIndex < 0 || selectedIndex > 5)) return { ok: false as const };
+export type AnswerPatch = { selected: number | null; guess: boolean; flagged: boolean; addSec: number };
+
+export async function saveAnswer(attemptId: string, questionId: number, patch: AnswerPatch) {
+  const { selected, guess, flagged } = patch;
+  if (selected !== null && (!Number.isInteger(selected) || selected < 0 || selected > 5)) return { ok: false as const };
+  const addSec = Number.isFinite(patch.addSec) ? Math.max(0, Math.min(900, Math.round(patch.addSec))) : 0;
   const owned = await getOwnedAttempt(attemptId);
   if (!owned || owned.attempt.finishedAt) return { ok: false as const, expired: true };
   if (await expireIfOverdue(owned.attempt)) return { ok: false as const, expired: true };
   const db = await getDb();
   const [q] = await db.select().from(s.questions).where(and(eq(s.questions.id, questionId), eq(s.questions.testId, owned.attempt.testId)));
-  if (!q || (selectedIndex !== null && selectedIndex >= q.options.length)) return { ok: false as const };
-  const isCorrect = selectedIndex !== null && selectedIndex === q.correctIndex;
+  if (!q || (selected !== null && selected >= q.options.length)) return { ok: false as const };
+  const isCorrect = selected !== null && selected === q.correctIndex;
   await db
     .insert(s.attemptAnswers)
-    .values({ attemptId, questionId, selectedIndex, isGuess, isCorrect })
-    .onConflictDoUpdate({ target: [s.attemptAnswers.attemptId, s.attemptAnswers.questionId], set: { selectedIndex, isGuess, isCorrect } });
+    .values({ attemptId, questionId, selectedIndex: selected, isGuess: guess, isCorrect, flagged, timeSpentSec: addSec })
+    .onConflictDoUpdate({
+      target: [s.attemptAnswers.attemptId, s.attemptAnswers.questionId],
+      set: { selectedIndex: selected, isGuess: guess, isCorrect, flagged, timeSpentSec: sql`${s.attemptAnswers.timeSpentSec} + ${addSec}` },
+    });
   return { ok: true as const };
 }
 
@@ -160,4 +167,33 @@ export async function createOrder(planId: number) {
   if (!pending) await db.insert(s.orders).values({ userId: user.id, planId, amountUzs: plan.priceUzs, provider: "manual" });
   revalidatePath("/kabinet");
   redirect(`/kabinet?buyurtma=1`);
+}
+
+/* ───────── Profile ───────── */
+
+type ProfileState = { ok: boolean; message: string } | null;
+
+export async function updateProfile(_: ProfileState, form: FormData): Promise<ProfileState> {
+  const user = await getCurrentUser();
+  if (!user) redirect("/kirish?next=/kabinet/profil");
+  const parsed = z.object({ name: z.string().trim().min(2, "Ismingizni kiriting").max(60, "Ism juda uzun"), audience: z.enum(["teacher", "applicant"]) }).safeParse({ name: form.get("name"), audience: form.get("audience") });
+  if (!parsed.success) return { ok: false, message: parsed.error.issues[0].message };
+  const db = await getDb();
+  await db.update(s.users).set(parsed.data).where(eq(s.users.id, user.id));
+  revalidatePath("/", "layout");
+  return { ok: true, message: "Saqlandi" };
+}
+
+export async function changePassword(_: ProfileState, form: FormData): Promise<ProfileState> {
+  const user = await getCurrentUser();
+  if (!user) redirect("/kirish?next=/kabinet/profil");
+  const wait = await rateLimit("pwd", 6, 900, user.id);
+  if (wait) return { ok: false, message: waitText(wait) };
+  const current = String(form.get("current") ?? "").slice(0, 200);
+  const parsed = z.string().min(6, "Yangi parol kamida 6 belgi").max(72, "Parol 72 belgidan oshmasin").safeParse(form.get("next"));
+  if (!parsed.success) return { ok: false, message: parsed.error.issues[0].message };
+  if (!(await bcrypt.compare(current, user.passwordHash))) return { ok: false, message: "Joriy parol notoʻgʻri" };
+  const db = await getDb();
+  await db.update(s.users).set({ passwordHash: await bcrypt.hash(parsed.data, 10) }).where(eq(s.users.id, user.id));
+  return { ok: true, message: "Parol almashtirildi" };
 }

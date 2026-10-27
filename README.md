@@ -29,7 +29,9 @@ Hech qanday baza sozlash shart emas: `DATABASE_URL` boʻsh boʻlsa, loyiha ichid
 | Savol → Tushuntirish | Audio yuklash, rasmlar + soniyasi («hozirgi vaqtni olish»), izoh, muallif, oʻxshash savol, jonli koʻrinish |
 | Tariflar | Narx, muddat, imkoniyatlar |
 | Foydalanuvchilar | Qidiruv, qoʻlda obuna berish/toʻxtatish |
-| Toʻlovlar | Kutilayotgan buyurtmani «Toʻlandi» qilish → obuna avtomatik ochiladi |
+| Toʻlovlar | Tushum, kutilayotgan buyurtmalar, «Toʻlandi» → obuna avtomatik ochiladi, CSV eksport |
+| Tushunmadim | Qaysi tushuntirishni foydalanuvchilar tushunmagan — qayta yozish navbati |
+| Sozlamalar | Telefon, Telegram, email, toʻlov kartasi, yuqori eʼlon (saytda darhol yangilanadi) |
 
 **AI import:** `.env.local` ga `ANTHROPIC_API_KEY` qoʻshing. Kalitsiz ham oddiy format ishlaydi:
 
@@ -47,6 +49,14 @@ Javob: B
 4. Vercel'da fayl tizimi vaqtinchalik — shuning uchun productionda Supabase Storage **shart**.
 
 Oddiy VPS'da (`npm run build && npm start`) PGlite va lokal `uploads/` papkasi ham ishlaydi — faqat `.pglite` va `uploads` ni zaxiralab turing.
+
+## Foydalanuvchi tajribasi
+
+- Test: savolni **belgilash** (F), savollar xaritasi, har savolga sarflangan vaqt, yakunlashdan oldin xulosa oynasi, 5 va 1 daqiqa ogohlantirishi.
+- Natija: daraja (Aʼlo/Yaxshi/…), mavzular xaritasi, **barcha savollar** roʻyxati (toʻgʻri/xato, vaqt, belgilanganlar), ovozli xabarlar.
+- Kabinet: statistika, oxirgi natijalar grafigi, takrorlash kerak boʻlgan mavzular, profil va parolni almashtirish.
+- Landing: raqamlar, taqqoslash, savol-javob; SEO (`sitemap.xml`, `robots.txt`, manifest), «Aloqa», oferta va maxfiylik sahifalari (oferta/maxfiylik matni — shablon, yurist koʻrib chiqsin).
+- Productionda `NEXT_PUBLIC_SITE_URL` ni oʻz domeningizga qoʻying (sitemap va OG uchun).
 
 ## Xavfsizlik va ishonchlilik
 

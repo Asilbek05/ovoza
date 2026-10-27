@@ -1,4 +1,4 @@
--- tushun. sxemasi (Supabase SQL editorida ishga tushiring)
+-- tushun. schema (idempotent). Generated from src/db/ddl.ts
 CREATE TABLE IF NOT EXISTS exam_types (
   id SERIAL PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,
@@ -132,3 +132,17 @@ CREATE TABLE IF NOT EXISTS orders (
   status TEXT NOT NULL DEFAULT 'pending',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+ALTER TABLE attempt_answers ADD COLUMN IF NOT EXISTS time_spent_sec INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE attempt_answers ADD COLUMN IF NOT EXISTS flagged BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS note TEXT NOT NULL DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ;
+CREATE TABLE IF NOT EXISTS settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL DEFAULT ''
+);
+CREATE INDEX IF NOT EXISTS attempts_user ON attempts(user_id, started_at DESC);
+CREATE INDEX IF NOT EXISTS attempts_guest ON attempts(guest_id);
+CREATE INDEX IF NOT EXISTS attempts_test ON attempts(test_id);
+CREATE INDEX IF NOT EXISTS orders_user ON orders(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS subs_user ON subscriptions(user_id, status);
+CREATE INDEX IF NOT EXISTS tests_subject ON tests(subject_id, is_published);

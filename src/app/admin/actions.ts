@@ -11,6 +11,7 @@ import { saveUpload, validateUpload } from "@/lib/storage";
 import { aiAvailable, extractText, parseJson, parsePlain, parseWithAI, importedQuestion, type ImportedQuestion } from "@/lib/ai-import";
 import { slugify } from "@/lib/utils";
 import { rateLimit, rateReset, waitText } from "@/lib/rate-limit";
+import { SETTING_DEFS } from "@/lib/settings-defs";
 import { createHash, timingSafeEqual } from "crypto";
 
 export type ActionResult<T = undefined> = { ok: true; data?: T } | { ok: false; error: string };
@@ -438,7 +439,7 @@ export async function setOrderStatus(orderId: number, status: "paid" | "failed")
     const [o] = await db.select().from(s.orders).where(eq(s.orders.id, orderId));
     if (!o) return { ok: false, error: "Buyurtma topilmadi" };
     if (o.status === "paid") return { ok: false, error: "Bu buyurtma allaqachon toʻlangan" };
-    await db.update(s.orders).set({ status }).where(eq(s.orders.id, orderId));
+    await db.update(s.orders).set({ status, paidAt: status === "paid" ? new Date() : null }).where(eq(s.orders.id, orderId));
     if (status === "paid") await activate(o.userId, o.planId);
     revalidatePath("/admin", "layout");
     return { ok: true };
@@ -462,6 +463,58 @@ export async function bulkPublish(testIds: number[], isPublished: boolean): Prom
     await db.update(s.tests).set({ isPublished }).where(inArray(s.tests.id, testIds));
     revalidatePath("/admin", "layout");
     return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/* ───────── Settings ───────── */
+
+export async function saveSettings(values: Record<string, string>): Promise<ActionResult> {
+  try {
+    await assertAdmin();
+    const db = await getDb();
+    for (const def of SETTING_DEFS) {
+      const v = String(values[def.key] ?? "").trim().slice(0, 300);
+      if (def.key === "site_telegram" && v && !/^https?:\/\//i.test(v)) return { ok: false, error: "Telegram manzili https:// bilan boshlansin" };
+      await db.insert(s.settings).values({ key: def.key, value: v }).onConflictDoUpdate({ target: s.settings.key, set: { value: v } });
+    }
+    revalidatePath("/", "layout");
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/* ───────── Duplicate a test (questions + explanations are copied as drafts) ───────── */
+
+export async function duplicateTest(id: number): Promise<ActionResult<{ id: number }>> {
+  try {
+    await assertAdmin();
+    const db = await getDb();
+    const [t] = await db.select().from(s.tests).where(eq(s.tests.id, id));
+    if (!t) return { ok: false, error: "Test topilmadi" };
+    const newId = await db.transaction(async (tx) => {
+      const [copy] = await tx
+        .insert(s.tests)
+        .values({ subjectId: t.subjectId, title: `${t.title} (nusxa)`.slice(0, 120), description: t.description, durationMin: t.durationMin, isFree: t.isFree, isPublished: false, sort: t.sort })
+        .returning({ id: s.tests.id });
+      const qs = await tx.select().from(s.questions).where(eq(s.questions.testId, id)).orderBy(s.questions.position, s.questions.id);
+      for (const q of qs) {
+        const [nq] = await tx.insert(s.questions).values({ testId: copy.id, position: q.position, text: q.text, options: q.options, correctIndex: q.correctIndex, topic: q.topic }).returning({ id: s.questions.id });
+        const [ex] = await tx.select().from(s.explanations).where(eq(s.explanations.questionId, q.id));
+        if (ex) {
+          const [nex] = await tx.insert(s.explanations).values({ questionId: nq.id, audioUrl: ex.audioUrl, audioDurationSec: ex.audioDurationSec, note: ex.note, authorName: ex.authorName }).returning({ id: s.explanations.id });
+          const imgs = await tx.select().from(s.explanationImages).where(eq(s.explanationImages.explanationId, ex.id));
+          if (imgs.length) await tx.insert(s.explanationImages).values(imgs.map((im) => ({ explanationId: nex.id, url: im.url, startSec: im.startSec, caption: im.caption, position: im.position })));
+        }
+        const [sim] = await tx.select().from(s.similarQuestions).where(eq(s.similarQuestions.questionId, q.id));
+        if (sim) await tx.insert(s.similarQuestions).values({ questionId: nq.id, text: sim.text, options: sim.options, correctIndex: sim.correctIndex });
+      }
+      return copy.id;
+    });
+    revalidatePath("/admin", "layout");
+    return { ok: true, data: { id: newId } };
   } catch (e) {
     return fail(e);
   }

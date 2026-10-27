@@ -3,7 +3,7 @@ import { drizzle as drizzlePglite, type PgliteDatabase } from "drizzle-orm/pglit
 import { drizzle as drizzlePg } from "drizzle-orm/postgres-js";
 import * as schema from "./schema";
 import { DDL } from "./ddl";
-import { seed } from "./seed";
+import { seed, seedExtra } from "./seed";
 
 export type DB = PgliteDatabase<typeof schema>;
 
@@ -26,6 +26,7 @@ async function create(): Promise<DB> {
     db = drizzlePglite(client, { schema });
   }
   await seed(db);
+  await seedExtra(db);
   return db;
 }
 
