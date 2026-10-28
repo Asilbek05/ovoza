@@ -18,8 +18,8 @@ npm run dev
 
 | Nima | Qayerda |
 | --- | --- |
-| Sayt | http://localhost:3001 |
-| Admin panel | http://localhost:3001/admin (standart parol `admin12345`) |
+| Sayt | http://localhost:4010 |
+| Admin panel | http://localhost:4010/admin (standart parol `admin12345`) |
 
 Bazani sozlash shart emas — `DATABASE_URL` boʻsh boʻlsa, papka ichidagi `./.pglite` ishlatiladi; jadvallar va demo maʼlumotlar birinchi ishga tushishda oʻzi yaratiladi. Demo: 3 imtihon turi, 20 ta fan, 6 ta test, 8 ta tarif, ovozli tushuntirishli 1 savol.
 
@@ -136,7 +136,7 @@ VPS’da (`npm run build && npm start`) PGlite va lokal `uploads/` ham ishlaydi 
 
 | Alomat | Yechim |
 | --- | --- |
-| Port 3000 band | Eski `next dev` ni toʻxtating yoki `npm run dev -- -p 3002` |
+| Port 3000 band | Eski `next dev` ni toʻxtating yoki `npm run dev -- -p 4011` |
 | Baza «buzildi» | Serverni toʻxtating, `.pglite` ni oʻchiring (maʼlumot oʻchadi!), qayta ishga tushiring |
 | Mikrofon ishlamayapti | Brauzer ruxsatini tekshiring; sayt `https://` yoki `localhost` boʻlsin |
 | Admin parolini unutdim | `.env.local` dagi `ADMIN_PASSWORD` ni oʻzgartirib, serverni qayta ishga tushiring |

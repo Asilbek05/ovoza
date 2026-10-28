@@ -5,7 +5,7 @@ import { getDb, schema as s } from "@/db";
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001").replace(/\/$/, "");
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4010").replace(/\/$/, "");
   const db = await getDb();
   const exams = await db.select().from(s.examTypes).where(eq(s.examTypes.isActive, true));
   const subjects = await db.select().from(s.subjects).where(eq(s.subjects.isActive, true));
