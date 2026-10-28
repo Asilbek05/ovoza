@@ -75,7 +75,7 @@ export function Importer({ testId, ai }: { testId: number; ai: boolean }) {
               onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
               onDragLeave={() => setDrag(false)}
               onDrop={(e) => { e.preventDefault(); setDrag(false); const f = e.dataTransfer.files[0]; if (f) setFile(f); }}
-              className={cn("flex w-full flex-col items-center gap-3 rounded-[24px] border-2 border-dashed px-6 py-12 text-center transition", drag ? "border-primary bg-primary-soft" : "border-primary-mid/60 bg-bg hover:border-primary")}
+              className={cn("flex w-full flex-col items-center gap-3 rounded-[18px] border-2 border-dashed px-6 py-12 text-center transition", drag ? "border-primary bg-primary-soft" : "border-primary-mid/60 bg-bg hover:border-primary")}
             >
               <span className="flex size-14 items-center justify-center rounded-2xl bg-primary text-white"><FileUp className="size-6" /></span>
               <span className="font-display text-lg font-bold">{file ? file.name : "Faylni shu yerga tashlang yoki tanlang"}</span>
@@ -97,7 +97,7 @@ export function Importer({ testId, ai }: { testId: number; ai: boolean }) {
 
       {items ? (
         <section className="space-y-3">
-          <div className="sticky top-16 z-10 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-line bg-surface/95 p-3 pl-5 backdrop-blur lg:top-4">
+          <div className="sticky top-16 z-10 flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-line bg-surface/95 p-3 pl-5 backdrop-blur lg:top-4">
             <div className="flex flex-wrap items-center gap-2">
               <span className="font-display text-lg font-bold">{items.length} ta savol</span>
               <Badge tone="gray">{source === "ai" ? "AI" : source === "json" ? "JSON" : "format boʻyicha"}</Badge>

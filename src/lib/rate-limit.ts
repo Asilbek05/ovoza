@@ -2,8 +2,8 @@ import "server-only";
 import { headers } from "next/headers";
 
 type Hit = { count: number; reset: number };
-const g = globalThis as unknown as { __tushunRate?: Map<string, Hit> };
-const store = (g.__tushunRate ??= new Map<string, Hit>());
+const g = globalThis as unknown as { __ovozaRate?: Map<string, Hit> };
+const store = (g.__ovozaRate ??= new Map<string, Hit>());
 
 export async function clientIp() {
   const h = await headers();

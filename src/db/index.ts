@@ -8,8 +8,8 @@ import { seed, seedExtra } from "./seed";
 export type DB = PgliteDatabase<typeof schema>;
 
 type Holder = { promise?: Promise<DB> };
-const g = globalThis as unknown as { __tushunDb?: Holder };
-const holder: Holder = (g.__tushunDb ??= {});
+const g = globalThis as unknown as { __ovozaDb?: Holder };
+const holder: Holder = (g.__ovozaDb ??= {});
 
 async function create(): Promise<DB> {
   const url = process.env.DATABASE_URL;

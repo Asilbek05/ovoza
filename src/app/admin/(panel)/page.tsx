@@ -92,7 +92,7 @@ export default async function Dashboard() {
         ))}
       </div>
       {pendingN > 0 ? (
-        <Link href="/admin/tolovlar" className="mt-3 flex items-center justify-between gap-3 rounded-[24px] border-2 border-accent bg-accent-soft px-5 py-4 font-semibold transition hover:bg-[#fff0b8]">
+        <Link href="/admin/tolovlar" className="mt-3 flex items-center justify-between gap-3 rounded-[18px] border-2 border-accent bg-accent-soft px-5 py-4 font-semibold transition hover:bg-accent-soft/70">
           <span>{pendingN} ta buyurtma toʻlovni kutmoqda</span><span className="flex items-center gap-1 text-primary">Koʻrish <ArrowRight className="size-4" /></span>
         </Link>
       ) : null}

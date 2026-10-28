@@ -145,7 +145,7 @@ export function ExplanationPlayer({
       {/* Solution images bubble */}
       {sorted.length ? (
         <div className={cn("bubble-in w-full max-w-[560px] self-start bg-surface p-2.5", compact && "max-w-none")}>
-          <div className="relative overflow-hidden rounded-[16px] border border-line-2 bg-[#FBFCFF]">
+          <div className="relative overflow-hidden rounded-[16px] border border-line-2 bg-bg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img key={img?.url} src={img?.url} alt={img?.caption || `Yechim rasmi ${active + 1}`} className="aspect-[8/5] w-full object-contain" />
             <span className="absolute top-2.5 right-2.5 rounded-full bg-ink/80 px-2.5 py-1 text-[12px] font-bold text-white">{active + 1} / {sorted.length}</span>

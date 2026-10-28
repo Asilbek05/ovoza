@@ -17,7 +17,7 @@ export function DialogContent({ className, children, side, ...props }: React.Com
           "fixed z-50 bg-surface shadow-float focus:outline-none",
           side === "right"
             ? "inset-y-0 right-0 flex w-full max-w-[560px] flex-col overflow-y-auto border-l border-line p-6"
-            : "top-1/2 left-1/2 max-h-[90vh] w-[calc(100%-32px)] max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[28px] p-6 sm:p-7",
+            : "top-1/2 left-1/2 max-h-[90vh] w-[calc(100%-32px)] max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[20px] p-6 sm:p-7",
           className,
         )}
         {...props}

@@ -40,12 +40,12 @@ export default async function AnalysisPage({ params }: { params: Promise<{ id: s
       </div>
 
       <div className="grid items-start gap-5 lg:grid-cols-[260px_1fr] xl:grid-cols-[280px_1fr_320px]">
-        <aside className="hidden rounded-[28px] border border-line bg-surface p-3 lg:block">
+        <aside className="hidden rounded-[20px] border border-line bg-surface p-3 lg:block">
           {r.items.map((it) => (
             <Link
               key={it.questionId}
               href={it.unlocked ? `/natija/${id}/${it.questionId}` : "/tariflar"}
-              className={cn("flex items-center gap-3 rounded-[18px] p-2.5 transition", it.questionId === item.questionId ? "bg-primary-soft" : "hover:bg-bg", !it.unlocked && "opacity-55")}
+              className={cn("flex items-center gap-3 rounded-[14px] p-2.5 transition", it.questionId === item.questionId ? "bg-primary-soft" : "hover:bg-bg", !it.unlocked && "opacity-55")}
             >
               <span className={cn("flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-bold", it.kind === "guess" ? "bg-accent-soft text-accent-ink" : "bg-danger-soft text-danger-ink")}>{it.number}</span>
               <span className="min-w-0 flex-1">
@@ -56,7 +56,7 @@ export default async function AnalysisPage({ params }: { params: Promise<{ id: s
           ))}
         </aside>
 
-        <section className="min-w-0 overflow-hidden rounded-[32px] border border-line bg-surface">
+        <section className="min-w-0 overflow-hidden rounded-[24px] border border-line bg-surface">
           <div className="flex items-center gap-3 border-b border-line-2 px-5 py-4">
             <span className="flex size-12 items-center justify-center rounded-full bg-primary font-bold text-white">{initials}</span>
             <span className="min-w-0 flex-1"><span className="block text-[17px] font-bold">{author}</span><span className="block truncate text-[13px] text-muted">{item.number}-savol · {q.topic ?? r.subject.name}</span></span>
@@ -84,7 +84,7 @@ export default async function AnalysisPage({ params }: { params: Promise<{ id: s
 
         <aside className="lg:col-span-2 xl:col-span-1">
           {sim ? <SimilarCard text={sim.text} options={sim.options} correctIndex={sim.correctIndex} /> : (
-            <div className="rounded-[28px] border border-line bg-surface p-6">
+            <div className="rounded-[20px] border border-line bg-surface p-6">
               <p className="font-display text-lg font-bold">Bu mavzuda yana</p>
               <p className="mt-1.5 text-[15px] text-muted">«{q.topic ?? r.subject.name}» boʻyicha boshqa testlarni yeching.</p>
               <Link href={`/imtihon/${r.exam.slug}/${r.subject.slug}`} className="mt-3 inline-block font-bold text-primary hover:underline">Testlar →</Link>

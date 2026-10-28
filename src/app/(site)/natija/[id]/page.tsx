@@ -27,7 +27,7 @@ export default async function ResultPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="container-page pt-6 pb-10">
-      <section className="flex flex-col items-center gap-8 rounded-[36px] border border-line bg-surface p-7 sm:p-10 lg:flex-row lg:gap-12 lg:p-12">
+      <section className="flex flex-col items-center gap-8 rounded-[28px] border border-line bg-surface p-7 sm:p-10 lg:flex-row lg:gap-12 lg:p-12">
         <div className="relative flex size-[200px] shrink-0 items-center justify-center sm:size-[230px]">
           <svg viewBox="0 0 230 230" className="absolute inset-0 -rotate-90" aria-hidden>
             <circle cx="115" cy="115" r="96" fill="none" stroke="var(--color-primary-soft)" strokeWidth="22" />
@@ -43,8 +43,8 @@ export default async function ResultPage({ params }: { params: Promise<{ id: str
             <p className="text-sm font-semibold text-muted">{r.exam.name} · {r.test.title}</p>
             <span className={cn("rounded-full px-3 py-1 text-[13px] font-bold", level.tone)}>{level.label}</span>
           </div>
-          <h1 className="font-display text-[30px] leading-[1.1] font-extrabold sm:text-[44px]">
-            {r.items.length === 0 ? "Ajoyib! Hamma savolga ishonch bilan toʻgʻri javob berdingiz." : <>Tahlil qilishga arziydigan <span className="text-primary">{r.items.length} ta savol</span> bor.</>}
+          <h1 className="font-serif text-[40px] leading-[1.1] font-normal tracking-[-0.02em] sm:text-[58px]">
+            {r.items.length === 0 ? "Ajoyib! Hamma savolga ishonch bilan toʻgʻri javob berdingiz." : <>Tahlil qilishga arziydigan <em className="marker italic">{r.items.length} ta savol</em> bor.</>}
           </h1>
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full bg-success-soft px-3.5 py-2 text-sm font-bold text-success-ink">{correct} ta toʻgʻri</span>
@@ -64,7 +64,7 @@ export default async function ResultPage({ params }: { params: Promise<{ id: str
       </section>
 
       <div className="mt-6 grid items-start gap-6 lg:grid-cols-[1fr_1.5fr]">
-        <section className="rounded-[32px] border border-line bg-surface p-6 sm:p-7">
+        <section className="rounded-[24px] border border-line bg-surface p-6 sm:p-7">
           <h2 className="font-display text-2xl font-bold">Mavzular xaritasi</h2>
           <div className="mt-5 space-y-4">
             {r.topics.map((t) => {
@@ -73,15 +73,15 @@ export default async function ResultPage({ params }: { params: Promise<{ id: str
               return (
                 <div key={t.name}>
                   <div className="mb-1.5 flex justify-between text-[15px] font-semibold"><span>{t.name}</span><span className={weak ? "text-danger-ink" : "text-primary-deep"}>{t.correct} / {t.total}</span></div>
-                  <div className="h-3 overflow-hidden rounded-full bg-[#EEF3FC]"><div className={cn("h-full rounded-full", weak ? "bg-[#F07B7F]" : "bg-primary")} style={{ width: `${Math.max(4, p * 100)}%` }} /></div>
+                  <div className="h-3 overflow-hidden rounded-full bg-line-2"><div className={cn("h-full rounded-full", weak ? "bg-danger" : "bg-primary")} style={{ width: `${Math.max(4, p * 100)}%` }} /></div>
                 </div>
               );
             })}
           </div>
-          {weakest ? <p className="mt-6 rounded-[20px] bg-[#FFF8DD] px-4 py-3.5 text-[15px] leading-relaxed"><b>Tavsiya:</b> avval «{weakest.name}» mavzusini takrorlang.</p> : null}
+          {weakest ? <p className="mt-6 rounded-[16px] bg-accent-soft px-4 py-3.5 text-[15px] leading-relaxed"><b>Tavsiya:</b> avval «{weakest.name}» mavzusini takrorlang.</p> : null}
         </section>
 
-        <section className="rounded-[32px] border border-line bg-surface p-4 sm:p-6">
+        <section className="rounded-[24px] border border-line bg-surface p-4 sm:p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2 px-2 pb-3">
             <h2 className="font-display text-2xl font-bold">Ovozli xabarlar</h2>
             <span className="text-sm font-semibold text-muted">{r.items.length} ta</span>
@@ -106,9 +106,9 @@ export default async function ResultPage({ params }: { params: Promise<{ id: str
                 return (
                   <li key={it.questionId}>
                     {it.unlocked ? (
-                      <Link href={`/natija/${id}/${it.questionId}`} className="flex items-center gap-3.5 rounded-[20px] p-2.5 transition hover:bg-bg">{inner}</Link>
+                      <Link href={`/natija/${id}/${it.questionId}`} className="flex items-center gap-3.5 rounded-[16px] p-2.5 transition hover:bg-bg">{inner}</Link>
                     ) : (
-                      <Link href={r.loggedIn ? "/tariflar" : `/royxat?next=/natija/${id}`} className="flex items-center gap-3.5 rounded-[20px] p-2.5 opacity-75 transition hover:bg-bg">{inner}</Link>
+                      <Link href={r.loggedIn ? "/tariflar" : `/royxat?next=/natija/${id}`} className="flex items-center gap-3.5 rounded-[16px] p-2.5 opacity-75 transition hover:bg-bg">{inner}</Link>
                     )}
                   </li>
                 );
@@ -116,7 +116,7 @@ export default async function ResultPage({ params }: { params: Promise<{ id: str
             </ul>
           )}
           {r.loggedIn && r.items.some((x) => !x.unlocked) ? (
-            <div className="mt-3 flex flex-col gap-3 rounded-[22px] bg-primary-soft p-4 sm:flex-row sm:items-center">
+            <div className="mt-3 flex flex-col gap-3 rounded-[16px] bg-primary-soft p-4 sm:flex-row sm:items-center">
               <p className="flex-1 text-[15px] font-semibold text-primary-deep">Bepul testda birinchi 3 ta tushuntirish ochiq. Qolganlari obuna bilan.</p>
               <Button asChild variant="plain"><Link href="/tariflar">Tariflar</Link></Button>
             </div>
@@ -124,7 +124,7 @@ export default async function ResultPage({ params }: { params: Promise<{ id: str
         </section>
       </div>
 
-      <section className="mt-6 rounded-[32px] border border-line bg-surface p-4 sm:p-6">
+      <section className="mt-6 rounded-[24px] border border-line bg-surface p-4 sm:p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-2 px-2 pb-4">
           <h2 className="font-display text-2xl font-bold">Barcha savollar</h2>
           <span className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold text-muted">
@@ -138,7 +138,7 @@ export default async function ResultPage({ params }: { params: Promise<{ id: str
             return (
               <li key={row.questionId}>
                 <details className="group">
-                  <summary className="flex cursor-pointer list-none items-center gap-3 rounded-[18px] px-2 py-3 hover:bg-bg [&::-webkit-details-marker]:hidden">
+                  <summary className="flex cursor-pointer list-none items-center gap-3 rounded-[14px] px-2 py-3 hover:bg-bg [&::-webkit-details-marker]:hidden">
                     <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-full", state === "ok" ? "bg-success-soft text-success-ink" : state === "bad" ? "bg-danger-soft text-danger-ink" : "bg-bg text-muted")}>
                       {state === "ok" ? <Check className="size-5" strokeWidth={2.6} /> : state === "bad" ? <XIcon className="size-5" strokeWidth={2.6} /> : <Minus className="size-5" />}
                     </span>

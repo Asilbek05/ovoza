@@ -208,7 +208,7 @@ export function Runner({ attemptId, title, subtitle, secondsLeft, questions, ini
             </button>
             <button onClick={() => setMap(true)} className="flex h-10 items-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-semibold lg:hidden"><Grid3x3 className="size-4" /> Savollar</button>
           </div>
-          <div key={q.id} className="animate-[fade-up_.25s_ease-out] rounded-[32px] border border-line bg-surface p-6 sm:p-10">
+          <div key={q.id} className="animate-[fade-up_.25s_ease-out] rounded-[24px] border border-line bg-surface p-6 sm:p-10">
             <p className="font-display text-[22px] leading-snug font-bold whitespace-pre-line sm:text-[28px]">{q.text}</p>
             <div role="radiogroup" aria-label="Javob variantlari" className="mt-7 grid gap-3 sm:grid-cols-2">
               {q.options.map((o, j) => {
@@ -220,8 +220,8 @@ export function Runner({ attemptId, title, subtitle, secondsLeft, questions, ini
                     aria-checked={on}
                     onClick={() => update({ selected: on ? null : j })}
                     className={cn(
-                      "flex min-h-[68px] items-center gap-4 rounded-[20px] border-2 px-4 py-3 text-left text-[18px] font-semibold transition active:scale-[0.99] sm:min-h-[76px]",
-                      on ? "border-primary bg-primary-soft" : "border-line bg-surface hover:border-primary-mid hover:bg-[#fafcff]",
+                      "flex min-h-[68px] items-center gap-4 rounded-[16px] border-2 px-4 py-3 text-left text-[18px] font-semibold transition active:scale-[0.99] sm:min-h-[76px]",
+                      on ? "border-primary bg-primary-soft" : "border-line bg-surface hover:border-primary-mid hover:bg-surface",
                     )}
                   >
                     <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-full text-base font-bold transition", on ? "bg-primary text-white" : "bg-bg text-ink-2")}>{L[j]}</span>
@@ -230,11 +230,11 @@ export function Runner({ attemptId, title, subtitle, secondsLeft, questions, ini
                 );
               })}
             </div>
-            <div className="mt-6 flex flex-col gap-3 rounded-[22px] bg-[#FFF8DD] p-4 sm:flex-row sm:items-center">
+            <div className="mt-6 flex flex-col gap-3 rounded-[16px] bg-accent-soft p-4 sm:flex-row sm:items-center">
               <span className="flex-1 text-[15px] font-bold">Javobingizga qanchalik ishonchingiz komil?</span>
               <div className="grid grid-cols-2 gap-2">
-                <button onClick={() => update({ guess: false })} aria-pressed={!cur.guess} className={cn("flex h-11 items-center justify-center gap-1.5 rounded-full px-3 text-[13px] font-bold whitespace-nowrap transition sm:px-4 sm:text-sm", !cur.guess ? "bg-ink text-white" : "border border-[#E6C34A] bg-surface")}><ShieldCheck className="size-4" /> Aniq bilaman</button>
-                <button onClick={() => update({ guess: true })} aria-pressed={cur.guess} className={cn("flex h-11 items-center justify-center gap-1.5 rounded-full px-3 text-[13px] font-bold whitespace-nowrap transition sm:px-4 sm:text-sm", cur.guess ? "bg-accent text-ink" : "border border-[#E6C34A] bg-surface")}><HelpCircle className="size-4" /> Taxmin qildim</button>
+                <button onClick={() => update({ guess: false })} aria-pressed={!cur.guess} className={cn("flex h-11 items-center justify-center gap-1.5 rounded-full px-3 text-[13px] font-bold whitespace-nowrap transition sm:px-4 sm:text-sm", !cur.guess ? "bg-ink text-white" : "border border-accent-ring bg-surface")}><ShieldCheck className="size-4" /> Aniq bilaman</button>
+                <button onClick={() => update({ guess: true })} aria-pressed={cur.guess} className={cn("flex h-11 items-center justify-center gap-1.5 rounded-full px-3 text-[13px] font-bold whitespace-nowrap transition sm:px-4 sm:text-sm", cur.guess ? "bg-accent text-ink" : "border border-accent-ring bg-surface")}><HelpCircle className="size-4" /> Taxmin qildim</button>
               </div>
             </div>
           </div>
@@ -247,12 +247,12 @@ export function Runner({ attemptId, title, subtitle, secondsLeft, questions, ini
 
         <aside className="hidden w-[320px] shrink-0 lg:block">
           <div className="sticky top-28 space-y-4">
-            <div className="rounded-[28px] border border-line bg-surface p-6">
+            <div className="rounded-[20px] border border-line bg-surface p-6">
               <div className="mb-4 flex items-baseline justify-between"><span className="font-display text-xl font-bold">Savollar</span><span className="text-sm font-semibold text-muted">{answered} / {questions.length}</span></div>
               {QuestionMap}
               {Legend}
             </div>
-            <p className="rounded-[24px] bg-primary-soft p-5 text-[14px] leading-relaxed text-primary-deep">
+            <p className="rounded-[18px] bg-primary-soft p-5 text-[14px] leading-relaxed text-primary-deep">
               Klaviatura: <b>A–D</b> — javob, <b>← →</b> — savollar, <b>F</b> — belgilash.
             </p>
           </div>
@@ -286,9 +286,9 @@ export function Runner({ attemptId, title, subtitle, secondsLeft, questions, ini
             <DialogDescription>Yakunlagandan keyin javoblarni oʻzgartirib boʻlmaydi.</DialogDescription>
           </DialogHeader>
           <div className="grid grid-cols-3 gap-2 text-center">
-            <div className="rounded-[18px] bg-primary-soft p-3"><b className="block font-display text-2xl">{answered}</b><span className="text-[13px] font-semibold text-primary-deep">javob berilgan</span></div>
-            <div className={cn("rounded-[18px] p-3", questions.length - answered ? "bg-danger-soft" : "bg-success-soft")}><b className="block font-display text-2xl">{questions.length - answered}</b><span className={cn("text-[13px] font-semibold", questions.length - answered ? "text-danger-ink" : "text-success-ink")}>javobsiz</span></div>
-            <div className="rounded-[18px] bg-accent-soft p-3"><b className="block font-display text-2xl">{flaggedList.length}</b><span className="text-[13px] font-semibold text-accent-ink">belgilangan</span></div>
+            <div className="rounded-[14px] bg-primary-soft p-3"><b className="block font-display text-2xl">{answered}</b><span className="text-[13px] font-semibold text-primary-deep">javob berilgan</span></div>
+            <div className={cn("rounded-[14px] p-3", questions.length - answered ? "bg-danger-soft" : "bg-success-soft")}><b className="block font-display text-2xl">{questions.length - answered}</b><span className={cn("text-[13px] font-semibold", questions.length - answered ? "text-danger-ink" : "text-success-ink")}>javobsiz</span></div>
+            <div className="rounded-[14px] bg-accent-soft p-3"><b className="block font-display text-2xl">{flaggedList.length}</b><span className="text-[13px] font-semibold text-accent-ink">belgilangan</span></div>
           </div>
           {flaggedList.length ? (
             <p className="mt-4 text-[15px] text-muted">Belgilangan savollar: {flaggedList.map(({ j }) => (

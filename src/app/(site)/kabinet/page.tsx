@@ -44,7 +44,7 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm font-semibold text-muted">{user.audience === "applicant" ? "Abituriyent" : "Oʻqituvchi"} · +{user.phone}</p>
-          <h1 className="font-display text-[36px] leading-tight font-extrabold sm:text-5xl">Salom, {user.name.split(" ")[0]}</h1>
+          <h1 className="font-serif text-[48px] leading-[1.02] font-normal tracking-[-0.02em] sm:text-[68px]">Salom, {user.name.split(" ")[0]}</h1>
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline"><Link href="/kabinet/profil"><Settings /> Profil</Link></Button>
@@ -53,10 +53,10 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
       </div>
 
       {buyurtma && pending ? (
-        <div className="mb-6 rounded-[28px] border-2 border-accent bg-accent-soft p-6">
+        <div className="mb-6 rounded-[20px] border-2 border-accent bg-accent-soft p-6">
           <p className="font-display text-xl font-bold">Buyurtma qabul qilindi: {pending.plan} · {formatPrice(pending.o.amountUzs)}</p>
           <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">Click va Payme orqali toʻlov tez orada ulanadi. Hozircha quyidagi usulda toʻlang — tasdiqlangach obuna avtomatik ochiladi.</p>
-          <dl className="mt-4 grid gap-2 rounded-[20px] bg-surface p-4 text-[15px] sm:grid-cols-2">
+          <dl className="mt-4 grid gap-2 rounded-[16px] bg-surface p-4 text-[15px] sm:grid-cols-2">
             <div><dt className="text-[13px] font-semibold text-muted">Buyurtma raqami</dt><dd className="font-display text-xl font-bold">#{pending.o.id}</dd></div>
             <div><dt className="text-[13px] font-semibold text-muted">Summa</dt><dd className="font-display text-xl font-bold">{formatPrice(pending.o.amountUzs)}</dd></div>
             {settings.payment_card ? <div><dt className="text-[13px] font-semibold text-muted">Karta</dt><dd className="font-display text-xl font-bold tabular-nums">{settings.payment_card}</dd>{settings.payment_holder ? <dd className="text-[13px] text-muted">{settings.payment_holder}</dd> : null}</div> : null}
@@ -68,7 +68,7 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
 
       {stats.count > 0 ? (
         <section aria-label="Statistika" className="mb-6 grid gap-4 lg:grid-cols-[1.1fr_1fr]">
-          <div className="rounded-[32px] border border-line bg-surface p-6 sm:p-7">
+          <div className="rounded-[24px] border border-line bg-surface p-6 sm:p-7">
             <div className="grid grid-cols-3 gap-3">
               {[
                 { icon: ListChecks, v: stats.count, l: "test yechildi", tone: "bg-primary-soft text-primary" },
@@ -87,19 +87,19 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
               {stats.trend.map((x) => (
                 <Link key={x.id} href={`/natija/${x.id}`} title={`${x.title}: ${x.pct}%`} className="group flex h-full max-w-14 flex-1 flex-col justify-end gap-1">
                   <span className="text-center text-[11px] font-bold text-muted opacity-0 transition group-hover:opacity-100">{x.pct}</span>
-                  <span className={cn("block min-h-1.5 rounded-t-lg transition group-hover:opacity-80", x.pct >= 70 ? "bg-success" : x.pct >= 50 ? "bg-primary" : "bg-[#F07B7F]")} style={{ height: `${Math.max(6, x.pct)}%` }} />
+                  <span className={cn("block min-h-1.5 rounded-t-lg transition group-hover:opacity-80", x.pct >= 70 ? "bg-success" : x.pct >= 50 ? "bg-primary" : "bg-danger")} style={{ height: `${Math.max(6, x.pct)}%` }} />
                 </Link>
               ))}
             </div>
           </div>
-          <div className="rounded-[32px] border border-line bg-surface p-6 sm:p-7">
+          <div className="rounded-[24px] border border-line bg-surface p-6 sm:p-7">
             <h2 className="font-display text-xl font-bold">Takrorlash kerak</h2>
             {stats.weak.length === 0 ? <p className="mt-3 text-[15px] text-muted">Hali yetarli maʼlumot yoʻq — yana bir-ikki test yeching.</p> : (
               <ul className="mt-4 space-y-3.5">
                 {stats.weak.map((w) => (
                   <li key={w.topic}>
                     <div className="mb-1.5 flex justify-between text-[15px] font-semibold"><span className="truncate pr-3">{w.topic}</span><span className={w.pct < 60 ? "text-danger-ink" : "text-primary-deep"}>{w.correct}/{w.total}</span></div>
-                    <div className="h-2.5 overflow-hidden rounded-full bg-[#EEF3FC]"><div className={cn("h-full rounded-full", w.pct < 60 ? "bg-[#F07B7F]" : "bg-primary")} style={{ width: `${Math.max(4, w.pct)}%` }} /></div>
+                    <div className="h-2.5 overflow-hidden rounded-full bg-line-2"><div className={cn("h-full rounded-full", w.pct < 60 ? "bg-danger" : "bg-primary")} style={{ width: `${Math.max(4, w.pct)}%` }} /></div>
                   </li>
                 ))}
               </ul>
@@ -109,7 +109,7 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
       ) : null}
 
       <div className="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
-        <section className="rounded-[32px] border border-line bg-surface p-4 sm:p-6">
+        <section className="rounded-[24px] border border-line bg-surface p-4 sm:p-6">
           <h2 className="px-2 pb-3 font-display text-2xl font-bold">Urinishlarim</h2>
           {attempts.length === 0 ? (
             <div className="px-2 py-8 text-center">
@@ -120,8 +120,8 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
             <ul className="flex flex-col gap-1">
               {attempts.map(({ a, title, subject }) => (
                 <li key={a.id}>
-                  <Link href={a.finishedAt ? `/natija/${a.id}` : `/urinish/${a.id}`} className="flex items-center gap-4 rounded-[20px] p-3 transition hover:bg-bg">
-                    <span className="flex size-14 shrink-0 flex-col items-center justify-center rounded-[18px] bg-primary-soft font-display text-primary-deep">
+                  <Link href={a.finishedAt ? `/natija/${a.id}` : `/urinish/${a.id}`} className="flex items-center gap-4 rounded-[16px] p-3 transition hover:bg-bg">
+                    <span className="flex size-14 shrink-0 flex-col items-center justify-center rounded-[14px] bg-primary-soft font-display text-primary-deep">
                       {a.finishedAt ? <><span className="text-lg leading-none font-extrabold">{a.correctCount}</span><span className="text-[11px] font-bold">/{a.total}</span></> : <Clock className="size-5" />}
                     </span>
                     <span className="min-w-0 flex-1">
@@ -136,7 +136,7 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
           )}
         </section>
         <aside className="space-y-4">
-          <div className={sub ? "rounded-[28px] bg-primary p-6 text-white" : "rounded-[28px] border border-line bg-surface p-6"}>
+          <div className={sub ? "rounded-[20px] bg-primary p-6 text-white" : "rounded-[20px] border border-line bg-surface p-6"}>
             <p className={sub ? "text-sm font-semibold text-white/80" : "text-sm font-semibold text-muted"}>Obuna</p>
             {sub ? (
               <>
@@ -152,7 +152,7 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
             )}
           </div>
           {orders.length ? (
-            <div className="rounded-[28px] border border-line bg-surface p-6">
+            <div className="rounded-[20px] border border-line bg-surface p-6">
               <p className="mb-3 font-display text-lg font-bold">Buyurtmalar</p>
               <ul className="space-y-2 text-[15px]">
                 {orders.map(({ o, plan }) => (

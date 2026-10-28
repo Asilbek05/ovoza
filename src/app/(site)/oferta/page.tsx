@@ -6,7 +6,7 @@ export default function OfferPage() {
   return (
     <ProsePage title="Ommaviy oferta" updated="2026-yil">
       <h2>1. Umumiy qoidalar</h2>
-      <p>Mazkur oferta «tushun.» platformasi (keyingi oʻrinlarda — Platforma) xizmatlaridan foydalanish shartlarini belgilaydi. Platformada roʻyxatdan oʻtish yoki toʻlov qilish ushbu shartlarga rozilikni bildiradi.</p>
+      <p>Mazkur oferta «ovoza» platformasi (keyingi oʻrinlarda — Platforma) xizmatlaridan foydalanish shartlarini belgilaydi. Platformada roʻyxatdan oʻtish yoki toʻlov qilish ushbu shartlarga rozilikni bildiradi.</p>
       <h2>2. Xizmat tavsifi</h2>
       <p>Platforma attestatsiya va milliy sertifikat formatidagi oʻquv testlarini hamda xato javoblarga ovozli va rasmli tushuntirishlarni taqdim etadi. Testlar oʻquv-mashq maqsadida tuzilgan va rasmiy imtihon natijasiga kafolat bermaydi.</p>
       <h2>3. Tariflar va toʻlov</h2>

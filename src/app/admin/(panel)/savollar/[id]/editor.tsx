@@ -103,7 +103,7 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
               onClick={() => audioInput.current?.click()}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files.length) void upload([e.dataTransfer.files[0]], "audio"); }}
-              className="flex w-full flex-col items-center gap-2 rounded-[22px] border-2 border-dashed border-primary-mid/60 bg-bg px-6 py-10 transition hover:border-primary"
+              className="flex w-full flex-col items-center gap-2 rounded-[16px] border-2 border-dashed border-primary-mid/60 bg-bg px-6 py-10 transition hover:border-primary"
             >
               <Upload className="size-6 text-primary" />
               <span className="font-display text-lg font-bold">{uploading === "audio" ? "Yuklanmoqda…" : "Ustoz audiosini tashlang yoki tanlang"}</span>
@@ -129,9 +129,9 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
           ) : (
             <ul className="space-y-3">
               {st.images.map((im, i) => (
-                <li key={im.url + i} className="flex flex-wrap items-center gap-3 rounded-[20px] border border-line p-3 sm:flex-nowrap">
+                <li key={im.url + i} className="flex flex-wrap items-center gap-3 rounded-[16px] border border-line p-3 sm:flex-nowrap">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={im.url} alt="" className="h-16 w-24 shrink-0 rounded-xl border border-line-2 bg-[#FBFCFF] object-contain" />
+                  <img src={im.url} alt="" className="h-16 w-24 shrink-0 rounded-xl border border-line-2 bg-bg object-contain" />
                   <Input className="h-10 min-w-0 flex-1" placeholder={`Sarlavha (masalan: ${i === 0 ? "Soddalashtirish" : "Viyet teoremasi"})`} value={im.caption} onChange={(e) => setImg(i, { caption: e.target.value })} aria-label="Rasm sarlavhasi" />
                   <div className="flex items-center gap-1.5">
                     <Input className="h-10 w-20 text-center tabular-nums" type="number" min={0} step={1} value={Math.round(im.startSec)} onChange={(e) => setImg(i, { startSec: Number(e.target.value) })} aria-label="Boshlanish soniyasi" />

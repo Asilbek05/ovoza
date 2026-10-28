@@ -10,6 +10,6 @@ export function authSecret(): Uint8Array {
   return new TextEncoder().encode(s);
 }
 
-export const USER_COOKIE = "tushun_session";
-export const ADMIN_COOKIE = "tushun_admin";
-export const GUEST_COOKIE = "tushun_guest";
+export const USER_COOKIE = "ovoza_session";
+export const ADMIN_COOKIE = "ovoza_admin";
+export const GUEST_COOKIE = "ovoza_guest";

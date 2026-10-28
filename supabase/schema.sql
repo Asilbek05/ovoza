@@ -1,4 +1,4 @@
--- tushun. schema (idempotent). Generated from src/db/ddl.ts
+-- ovoza schema (idempotent). Generated from src/db/ddl.ts
 CREATE TABLE IF NOT EXISTS exam_types (
   id SERIAL PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,

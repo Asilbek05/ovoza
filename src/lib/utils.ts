@@ -37,9 +37,9 @@ export const SUBJECT_COLORS = {
   blue: { bg: "bg-primary-soft", icon: "bg-primary text-white", text: "text-primary-deep" },
   yellow: { bg: "bg-accent-soft", icon: "bg-accent text-ink", text: "text-accent-ink" },
   green: { bg: "bg-success-soft", icon: "bg-success text-white", text: "text-success-ink" },
-  coral: { bg: "bg-danger-soft", icon: "bg-danger text-white", text: "text-danger-ink" },
-  violet: { bg: "bg-[#EEE8FF]", icon: "bg-[#6A4FD8] text-white", text: "text-[#4B36A8]" },
-  teal: { bg: "bg-[#DDF3F5]", icon: "bg-[#0F7C86] text-white", text: "text-[#0B5E66]" },
+  coral: { bg: "bg-danger-soft", icon: "bg-[#ef7a5a] text-white", text: "text-danger-ink" },
+  violet: { bg: "bg-[#ece8f7]", icon: "bg-[#5b49a8] text-white", text: "text-[#43357f]" },
+  teal: { bg: "bg-[#dff1f4]", icon: "bg-[#1b7f93] text-white", text: "text-[#13596a]" },
 } as const;
 export type SubjectColor = keyof typeof SUBJECT_COLORS;
 export const SUBJECT_COLOR_NAMES: Record<SubjectColor, string> = {

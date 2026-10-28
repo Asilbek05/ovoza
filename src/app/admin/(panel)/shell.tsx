@@ -90,7 +90,7 @@ export function PageHeader({ title, description, actions, back }: { title: strin
         {back ? (
           <Link href={back.href} className="mb-2 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">← {back.label}</Link>
         ) : null}
-        <h1 className="font-display text-[30px] leading-tight font-extrabold sm:text-[36px]">{title}</h1>
+        <h1 className="font-serif text-[40px] leading-[1.02] font-normal tracking-[-0.02em] sm:text-[48px]">{title}</h1>
         {description ? <p className="mt-1.5 max-w-2xl text-[15px] text-muted">{description}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}

@@ -27,5 +27,5 @@ export async function GET(_: Request, { params }: { params: Promise<{ kind: stri
       .orderBy(desc(s.orders.createdAt));
     body = csv(["#", "Foydalanuvchi", "Telefon", "Tarif", "Summa", "Usul", "Holat", "Yaratilgan", "Toʻlangan"], rows.map((r) => [r.o.id, r.user, `+${r.phone}`, r.plan, r.o.amountUzs, r.o.provider, r.o.status, r.o.createdAt, r.o.paidAt]));
   } else return new Response("Not found", { status: 404 });
-  return new Response(body, { headers: { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": `attachment; filename="tushun-${kind}-${new Date().toISOString().slice(0, 10)}.csv"`, "Cache-Control": "no-store" } });
+  return new Response(body, { headers: { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": `attachment; filename="ovoza-${kind}-${new Date().toISOString().slice(0, 10)}.csv"`, "Cache-Control": "no-store" } });
 }

@@ -6,7 +6,7 @@ const badgeTones = {
   yellow: "bg-accent-soft text-accent-ink",
   green: "bg-success-soft text-success-ink",
   red: "bg-danger-soft text-danger-ink",
-  gray: "bg-[#EEF2F8] text-ink-2",
+  gray: "bg-line-2 text-ink-2",
   solid: "bg-primary text-white",
 };
 export function Badge({ tone = "blue", className, ...props }: React.HTMLAttributes<HTMLSpanElement> & { tone?: keyof typeof badgeTones }) {
@@ -14,7 +14,7 @@ export function Badge({ tone = "blue", className, ...props }: React.HTMLAttribut
 }
 
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("rounded-[28px] border border-line bg-surface", className)} {...props} />;
+  return <div className={cn("rounded-[20px] border border-line bg-surface", className)} {...props} />;
 }
 
 export function Table({ className, ...props }: React.TableHTMLAttributes<HTMLTableElement>) {
@@ -33,7 +33,7 @@ export function Td({ className, ...props }: React.TdHTMLAttributes<HTMLTableCell
 
 export function EmptyState({ icon, title, text, action }: { icon?: React.ReactNode; title: string; text?: string; action?: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-[28px] border border-dashed border-primary-mid/60 bg-surface px-6 py-14 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-[20px] border border-dashed border-primary-mid/60 bg-surface px-6 py-14 text-center">
       {icon ? <div className="flex size-14 items-center justify-center rounded-2xl bg-primary-soft text-primary">{icon}</div> : null}
       <p className="font-display text-xl font-bold">{title}</p>
       {text ? <p className="max-w-md text-[15px] text-muted">{text}</p> : null}

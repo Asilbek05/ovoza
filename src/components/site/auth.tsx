@@ -19,8 +19,8 @@ export function AuthCard({ mode, next, children }: { mode: "login" | "register";
   const err = (f: string) => (state && !state.ok && (state.field === f || (!state.field && f === "password")) ? state.error : undefined);
   return (
     <div className="container-page flex justify-center pt-6 pb-10 sm:pt-12">
-      <div className="w-full max-w-md rounded-[36px] border border-line bg-surface p-7 shadow-float sm:p-9">
-        <h1 className="font-display text-[32px] leading-tight font-extrabold">{mode === "login" ? "Xush kelibsiz" : "Roʻyxatdan oʻting"}</h1>
+      <div className="w-full max-w-md rounded-[28px] border border-line bg-surface p-7 shadow-float sm:p-9">
+        <h1 className="font-serif text-[44px] leading-[1.02] font-normal tracking-[-0.02em]">{mode === "login" ? "Xush kelibsiz" : "Roʻyxatdan oʻting"}</h1>
         <p className="mt-2 mb-7 text-[16px] text-muted">{mode === "login" ? "Telefon raqamingiz va parolingiz bilan kiring." : "Natijalaringiz va ovozli tushuntirishlar saqlanib qoladi."}</p>
         <form action={action} className="space-y-4">
           <input type="hidden" name="next" value={next ?? ""} />
@@ -28,7 +28,7 @@ export function AuthCard({ mode, next, children }: { mode: "login" | "register";
             <>
               <div role="radiogroup" aria-label="Siz kimsiz" className="grid grid-cols-2 gap-2">
                 {([["teacher", "Oʻqituvchi", Presentation], ["applicant", "Abituriyent", GraduationCap]] as const).map(([k, label, Icon]) => (
-                  <button key={k} type="button" role="radio" aria-checked={aud === k} onClick={() => setAud(k)} className={cn("flex h-14 items-center justify-center gap-2 rounded-[18px] border-2 text-[15px] font-bold transition", aud === k ? "border-primary bg-primary-soft text-primary-deep" : "border-line hover:border-primary-mid")}>
+                  <button key={k} type="button" role="radio" aria-checked={aud === k} onClick={() => setAud(k)} className={cn("flex h-14 items-center justify-center gap-2 rounded-[14px] border-2 text-[15px] font-bold transition", aud === k ? "border-primary bg-primary-soft text-primary-deep" : "border-line hover:border-primary-mid")}>
                     <Icon className="size-5" /> {label}
                   </button>
                 ))}

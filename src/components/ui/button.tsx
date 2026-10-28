@@ -4,25 +4,27 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition-[background,color,box-shadow,transform] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[14px] font-semibold transition-[background,color,box-shadow,transform] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         primary: "bg-primary text-white hover:bg-primary-deep shadow-cta",
         plain: "bg-primary text-white hover:bg-primary-deep",
-        soft: "bg-primary-soft text-primary-deep hover:bg-[#d5e2ff]",
-        outline: "border border-line bg-surface text-ink hover:border-primary-mid hover:bg-[#fafcff]",
+        soft: "bg-primary-soft text-primary-deep hover:bg-primary-mid/40",
+        ink: "bg-ink text-white hover:bg-ink-2",
+        "on-dark": "bg-white/10 text-white ring-1 ring-white/20 hover:bg-white/15",
+        outline: "border border-line bg-surface text-ink hover:border-primary-mid hover:bg-surface",
         ghost: "text-ink-2 hover:bg-primary-soft hover:text-primary-deep",
-        accent: "bg-accent text-ink hover:bg-[#ffc81f]",
+        accent: "bg-accent text-ink hover:bg-accent-deep",
         danger: "bg-danger text-white hover:bg-danger-ink",
-        "danger-soft": "bg-danger-soft text-danger-ink hover:bg-[#ffd9d9]",
+        "danger-soft": "bg-danger-soft text-danger-ink hover:bg-danger-soft/70",
         success: "bg-success text-white hover:bg-success-ink",
         link: "text-primary underline-offset-4 hover:underline px-0",
       },
       size: {
         sm: "h-9 px-4 text-sm",
         md: "h-11 px-5 text-[15px]",
-        lg: "h-14 px-7 text-base",
+        lg: "h-14 rounded-[16px] px-7 text-base",
         icon: "size-11",
         "icon-sm": "size-9",
       },

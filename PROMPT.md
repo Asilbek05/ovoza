@@ -1,4 +1,4 @@
-# tushun. — to'liq coding prompt
+# ovoza — to'liq coding prompt
 
 > Bu prompt Claude Code (yoki boshqa AI dasturchi) uchun yozilgan. Uni loyiha papkasida ochib, "PROMPT.md ga qarab ishla" deb bering. Har bir bo'lim — talab. Shubha bo'lsa, **soddaroq va o'qituvchi uchun qulayroq** variantni tanla.
 
@@ -6,7 +6,7 @@
 
 ## 1. Mahsulot (nima quryapmiz)
 
-**tushun.** — O'zbekistondagi o'qituvchilar (attestatsiya, milliy sertifikat) va abituriyentlar (milliy sertifikat, keyinchalik DTM) uchun demo test platformasi.
+**ovoza** — O'zbekistondagi o'qituvchilar (attestatsiya, milliy sertifikat) va abituriyentlar (milliy sertifikat, keyinchalik DTM) uchun demo test platformasi.
 
 Asosiy farq: har bir **xato** savolga ustozning **ovozli tushuntirishi (audio) + 2–4 ta yechim rasmi** beriladi. Rasmlar audio bilan sinxron almashadi (har bir rasmning `start_sec` vaqti bor). Tushuntirishdan keyin **o'xshash savol** chiqadi — tushungani tekshiriladi.
 

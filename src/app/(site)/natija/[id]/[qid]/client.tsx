@@ -32,10 +32,10 @@ export function SimilarCard({ text, options, correctIndex }: { text: string; opt
   const [pick, setPick] = useState<number | null>(null);
   const ok = pick === correctIndex;
   return (
-    <div className="flex flex-col gap-4 rounded-[28px] bg-accent-soft p-6">
+    <div className="flex flex-col gap-4 rounded-[20px] bg-accent-soft p-6">
       <span className="text-[13px] font-bold tracking-wider text-accent-ink uppercase">Oʻxshash savol</span>
       <p className="font-display text-xl leading-snug font-bold">Tushunganingizni tekshiring</p>
-      <p className="rounded-[18px] bg-surface px-4 py-3.5 text-center font-display text-[20px] leading-snug font-bold">{text}</p>
+      <p className="rounded-[14px] bg-surface px-4 py-3.5 text-center font-display text-[20px] leading-snug font-bold">{text}</p>
       <div className="grid grid-cols-2 gap-2">
         {options.map((o, j) => {
           const on = pick === j;
@@ -46,7 +46,7 @@ export function SimilarCard({ text, options, correctIndex }: { text: string; opt
               disabled={pick !== null && ok}
               className={cn(
                 "flex min-h-12 items-center justify-center gap-1.5 rounded-[16px] border-2 px-2 text-[15px] font-bold transition",
-                !on && "border-[#F0DE9A] bg-surface hover:border-accent",
+                !on && "border-accent-ring bg-surface hover:border-accent",
                 on && j === correctIndex && "border-success bg-success-soft text-success-ink",
                 on && j !== correctIndex && "border-danger bg-danger-soft text-danger-ink",
               )}

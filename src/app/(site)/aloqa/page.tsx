@@ -18,7 +18,7 @@ export default async function ContactPage() {
         <ul className="!mt-6 grid gap-3 [&_li]:ml-0 [&_li]:list-none [&_li]:p-0">
           {items.map(({ icon: Icon, label, value, href }) => (
             <li key={label}>
-              <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="flex items-center gap-4 rounded-[22px] border border-line p-4 transition hover:border-primary-mid hover:bg-bg">
+              <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="flex items-center gap-4 rounded-[16px] border border-line p-4 transition hover:border-primary-mid hover:bg-bg">
                 <span className="flex size-12 items-center justify-center rounded-2xl bg-primary-soft text-primary"><Icon className="size-5" /></span>
                 <span><span className="block text-[13px] font-semibold text-muted">{label}</span><span className="block text-[17px] font-bold text-ink">{value}</span></span>
               </a>

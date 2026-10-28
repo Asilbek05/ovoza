@@ -1,4 +1,4 @@
-# tushun. — xatoni ovoz bilan tushuntiradigan test platformasi
+# ovoza — xatoni ovoz bilan tushuntiradigan test platformasi
 
 Attestatsiya, milliy sertifikat (keyin DTM) demo testlari. Har bir xato savolga ustozning **audio tushuntirishi + yechim rasmlari** (audio bilan sinxron) va **oʻxshash savol**.
 
