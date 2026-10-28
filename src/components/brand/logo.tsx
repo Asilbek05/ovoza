@@ -1,18 +1,26 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const BUBBLE = "M344 220h336c92.8 0 168 75.2 168 168v176c0 92.8-75.2 168-168 168H460L268 846c-12 8.6-28.8 0-28.8-14.8V700c-39-30-63.2-77-63.2-136V388c0-92.8 75.2-168 168-168z";
-const BARS = [130, 250, 366, 236, 118];
+/**
+ * ovoza mark: two chat bubbles that read as "oo" — a question and an answer.
+ * Where they overlap (the lime lens) is understanding. Same geometry as public/brand/ovoza-mark.svg.
+ */
+const BLEFT = "M117 740V470A270 270 0 1 1 387 740Z";
+const BRIGHT = "M907 740H637A270 270 0 1 1 907 470Z";
 
-/** ovoza mark: a voice message — speech bubble with a waveform. Same geometry as public/brand/ovoza-mark.svg. */
 export function LogoMark({ className, tone = "dark" }: { className?: string; tone?: "dark" | "light" }) {
-  const tile = tone === "dark" ? "#0E4A40" : "#D4F04F";
-  const fg = tone === "dark" ? "#D4F04F" : "#0E4A40";
+  const id = tone === "dark" ? "lmd" : "lml";
+  const [a, b, lens] = tone === "dark" ? ["#0E4A40", "#1F7C64", "#D4F04F"] : ["#D4F04F", "#FFFFFF", null];
   return (
-    <svg viewBox="0 0 1024 1024" className={cn("size-9 shrink-0", className)} aria-hidden>
-      <rect width="1024" height="1024" rx="232" fill={tile} />
-      <path d={BUBBLE} fill={fg} />
-      {BARS.map((h, i) => <rect key={i} x={312 + i * 100 - 26} y={470 - h / 2} width="52" height={h} rx="26" fill={tile} />)}
+    <svg viewBox="77 160 870 620" className={cn("h-9 w-auto shrink-0", className)} aria-hidden>
+      <defs>
+        <clipPath id={`${id}c`}><path d={BRIGHT} /></clipPath>
+        <mask id={`${id}l`}><rect x="0" y="0" width="1024" height="1024" fill="#fff" /><path d={BRIGHT} fill="#000" /></mask>
+        <mask id={`${id}r`}><rect x="0" y="0" width="1024" height="1024" fill="#fff" /><path d={BLEFT} fill="#000" /></mask>
+      </defs>
+      <path d={BLEFT} fill={a} mask={`url(#${id}l)`} />
+      <path d={BRIGHT} fill={b} mask={`url(#${id}r)`} />
+      {lens ? <path d={BLEFT} fill={lens} clipPath={`url(#${id}c)`} /> : null}
     </svg>
   );
 }
