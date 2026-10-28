@@ -92,7 +92,7 @@ export function AudioRecorder({ onDone, disabled, label = "Mikrofondan yozish" }
 
   if (state === "recording") {
     return (
-      <div role="status" className="flex flex-wrap items-center gap-3 rounded-[16px] border border-danger/40 bg-danger-soft px-4 py-3">
+      <div role="status" className="flex flex-wrap items-center gap-3 rounded-2xl border border-danger/40 bg-danger-soft px-4 py-3">
         <span className="relative flex size-3"><span className="absolute inset-0 animate-ping rounded-full bg-danger opacity-60" /><span className="relative size-3 rounded-full bg-danger" /></span>
         <span className="font-display text-lg font-bold tabular-nums text-danger-ink">{formatDuration(sec)}</span>
         <span aria-hidden className="flex h-6 flex-1 items-center gap-[3px]">

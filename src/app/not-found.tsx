@@ -7,8 +7,8 @@ export default function NotFound() {
     <main className="grid min-h-dvh place-items-center px-4">
       <div className="flex flex-col items-center gap-5 text-center">
         <Logo />
-        <p className="font-display text-[88px] leading-none font-extrabold text-primary">404</p>
-        <h1 className="font-serif text-[40px] font-normal tracking-[-0.02em]">Bu sahifa topilmadi</h1>
+        <p className="font-display text-6xl leading-none font-bold text-primary">404</p>
+        <h1 className="t-h1">Bu sahifa topilmadi</h1>
         <p className="max-w-sm text-muted">Manzil notoʻgʻri yoki sahifa oʻchirilgan boʻlishi mumkin.</p>
         <Button asChild variant="primary" size="lg"><Link href="/">Bosh sahifaga</Link></Button>
       </div>

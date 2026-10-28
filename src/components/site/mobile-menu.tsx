@@ -10,7 +10,7 @@ export function MobileMenu({ links, loggedIn }: { links: { href: string; label: 
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button onClick={() => setOpen(true)} aria-label="Menyu" className="flex size-11 items-center justify-center rounded-full border border-line bg-surface lg:hidden">
+      <button onClick={() => setOpen(true)} aria-label="Menyu" className="flex size-10 items-center justify-center rounded-xl text-ink hover:bg-bg lg:hidden">
         <Menu className="size-5" />
       </button>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -21,7 +21,7 @@ export function MobileMenu({ links, loggedIn }: { links: { href: string; label: 
             {links.map((l) => (
               <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="flex h-14 items-center justify-between rounded-2xl px-4 font-display text-xl font-bold hover:bg-primary-soft">
                 {l.label}
-                {l.soon ? <span className="rounded-full bg-accent px-2 py-0.5 font-sans text-[11px] font-bold">tez orada</span> : null}
+                {l.soon ? <span className="rounded-full bg-accent px-2 py-0.5 font-sans text-xs font-bold">tez orada</span> : null}
               </Link>
             ))}
           </nav>

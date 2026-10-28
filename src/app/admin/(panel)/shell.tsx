@@ -32,7 +32,7 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
             href={href}
             onClick={onNavigate}
             className={cn(
-              "flex h-12 items-center gap-3 rounded-2xl px-4 text-[15px] font-semibold transition",
+              "flex h-12 items-center gap-3 rounded-2xl px-4 text-sm font-semibold transition",
               active ? "bg-primary text-white" : "text-ink-2 hover:bg-primary-soft hover:text-primary-deep",
             )}
           >
@@ -42,11 +42,11 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
         );
       })}
       <div className="mt-auto flex flex-col gap-1 border-t border-line pt-3">
-        <Link href="/" target="_blank" className="flex h-11 items-center gap-3 rounded-2xl px-4 text-[15px] font-semibold text-ink-2 hover:bg-primary-soft">
+        <Link href="/" target="_blank" className="flex h-11 items-center gap-3 rounded-2xl px-4 text-sm font-semibold text-ink-2 hover:bg-primary-soft">
           <ExternalLink className="size-5" /> Saytni ochish
         </Link>
         <form action={adminLogout}>
-          <button className="flex h-11 w-full items-center gap-3 rounded-2xl px-4 text-[15px] font-semibold text-danger-ink hover:bg-danger-soft">
+          <button className="flex h-11 w-full items-center gap-3 rounded-2xl px-4 text-sm font-semibold text-danger-ink hover:bg-danger-soft">
             <LogOut className="size-5" /> Chiqish
           </button>
         </form>
@@ -90,8 +90,8 @@ export function PageHeader({ title, description, actions, back }: { title: strin
         {back ? (
           <Link href={back.href} className="mb-2 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">← {back.label}</Link>
         ) : null}
-        <h1 className="font-serif text-[40px] leading-[1.02] font-normal tracking-[-0.02em] sm:text-[48px]">{title}</h1>
-        {description ? <p className="mt-1.5 max-w-2xl text-[15px] text-muted">{description}</p> : null}
+        <h1 className="t-h1">{title}</h1>
+        {description ? <p className="mt-1.5 max-w-2xl text-sm text-muted">{description}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
     </div>

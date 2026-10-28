@@ -57,14 +57,14 @@ export default async function TestsPage({ searchParams }: { searchParams: Promis
                   <tr key={test.id} className="hover:bg-bg/60">
                     <Td>
                       <Link href={`/admin/testlar/${test.id}`} className="font-semibold text-ink hover:text-primary hover:underline">{test.title}</Link>
-                      <span className="block text-[13px] text-muted">{test.durationMin} daqiqa</span>
+                      <span className="block text-xs text-muted">{test.durationMin} daqiqa</span>
                     </Td>
-                    <Td><span className="block font-medium">{subject}</span><span className="block text-[13px] text-muted">{exam}</span></Td>
+                    <Td><span className="block font-semibold">{subject}</span><span className="block text-xs text-muted">{exam}</span></Td>
                     <Td className="text-center font-display text-lg font-bold">{questions}</Td>
                     <Td className="min-w-40">
                       <div className="flex items-center gap-3">
                         <div className="h-2 flex-1 overflow-hidden rounded-full bg-primary-soft"><div className={`h-full rounded-full ${pct === 100 ? "bg-success" : "bg-primary"}`} style={{ width: `${pct}%` }} /></div>
-                        <span className="w-16 text-right text-[13px] font-semibold text-muted">{withAudio}/{questions}</span>
+                        <span className="w-16 text-right text-xs font-semibold text-muted">{withAudio}/{questions}</span>
                       </div>
                     </Td>
                     <Td>

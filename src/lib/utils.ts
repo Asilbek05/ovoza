@@ -34,12 +34,12 @@ export function waveform(count: number, seed = 1) {
 }
 
 export const SUBJECT_COLORS = {
-  blue: { bg: "bg-primary-soft", icon: "bg-primary text-white", text: "text-primary-deep" },
+  blue: { bg: "bg-tone-sky-soft", icon: "bg-tone-sky text-white", text: "text-tone-sky" },
   yellow: { bg: "bg-accent-soft", icon: "bg-accent text-ink", text: "text-accent-ink" },
-  green: { bg: "bg-success-soft", icon: "bg-success text-white", text: "text-success-ink" },
-  coral: { bg: "bg-danger-soft", icon: "bg-[#ef7a5a] text-white", text: "text-danger-ink" },
-  violet: { bg: "bg-[#ece8f7]", icon: "bg-[#5b49a8] text-white", text: "text-[#43357f]" },
-  teal: { bg: "bg-[#dff1f4]", icon: "bg-[#1b7f93] text-white", text: "text-[#13596a]" },
+  green: { bg: "bg-primary-soft", icon: "bg-primary text-white", text: "text-primary" },
+  coral: { bg: "bg-tone-rose-soft", icon: "bg-tone-rose text-white", text: "text-tone-rose" },
+  violet: { bg: "bg-tone-violet-soft", icon: "bg-tone-violet text-white", text: "text-tone-violet" },
+  teal: { bg: "bg-tone-teal-soft", icon: "bg-tone-teal text-white", text: "text-tone-teal" },
 } as const;
 export type SubjectColor = keyof typeof SUBJECT_COLORS;
 export const SUBJECT_COLOR_NAMES: Record<SubjectColor, string> = {

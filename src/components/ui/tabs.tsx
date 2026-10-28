@@ -11,7 +11,7 @@ export function TabsList({ className, ...props }: React.ComponentProps<typeof T.
 export function TabsTrigger({ className, ...props }: React.ComponentProps<typeof T.Trigger>) {
   return (
     <T.Trigger
-      className={cn("h-10 rounded-full px-4 text-[15px] font-semibold text-ink-2 transition hover:text-primary-deep data-[state=active]:bg-primary data-[state=active]:text-white", className)}
+      className={cn("h-10 rounded-xl px-4 text-sm font-semibold text-ink-2 transition hover:text-primary-deep data-[state=active]:bg-primary data-[state=active]:text-white", className)}
       {...props}
     />
   );

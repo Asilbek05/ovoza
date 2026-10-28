@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export const fieldClass =
-  "w-full rounded-[14px] border border-line bg-surface px-4 text-[15px] text-ink placeholder:text-muted/70 transition focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 disabled:opacity-60 aria-[invalid=true]:border-danger";
+  "w-full rounded-xl border border-line bg-surface px-4 text-sm text-ink placeholder:text-muted/70 transition focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 disabled:opacity-60 aria-[invalid=true]:border-danger";
 
 export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(({ className, ...props }, ref) => (
   <input ref={ref} className={cn(fieldClass, "h-11", className)} {...props} />
@@ -33,7 +33,7 @@ export function Field({ label, hint, error, children, htmlFor, className }: { la
     <div className={className}>
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
-      {error ? <p className="mt-1.5 text-sm font-medium text-danger-ink">{error}</p> : hint ? <p className="mt-1.5 text-[13px] text-muted">{hint}</p> : null}
+      {error ? <p className="mt-1.5 text-sm font-semibold text-danger-ink">{error}</p> : hint ? <p className="mt-1.5 text-xs text-muted">{hint}</p> : null}
     </div>
   );
 }

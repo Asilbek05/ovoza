@@ -30,8 +30,8 @@ export default async function FeedbackPage() {
           {rows.map((r) => (
             <Link key={r.qid} href={`/admin/savollar/${r.qid}`} className="flex flex-wrap items-center gap-3 px-5 py-4 transition hover:bg-bg">
               <span className="min-w-0 flex-1 basis-60">
-                <span className="block truncate text-[15px] font-semibold">{r.text}</span>
-                <span className="block truncate text-[13px] text-muted">{r.subject} · {r.test}</span>
+                <span className="block truncate text-sm font-semibold">{r.text}</span>
+                <span className="block truncate text-xs text-muted">{r.subject} · {r.test}</span>
               </span>
               <Badge tone={r.bad > 0 ? "red" : "gray"}>{r.bad} tushunmadi</Badge>
               <Badge tone="green">{r.good} tushundi</Badge>

@@ -19,14 +19,14 @@ export function ExamTypeCard({ et, subjects }: { et: ExamType; subjects: number 
     <Card className="flex flex-col gap-4 p-6">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl font-bold">{et.name}</h2>
+          <h2 className="t-h3">{et.name}</h2>
           <p className="text-sm font-semibold text-muted">{et.short}</p>
         </div>
         {!et.isActive ? <Badge tone="gray">Yashirin</Badge> : et.comingSoon ? <Badge tone="yellow">Tez orada</Badge> : <Badge tone="green">Faol</Badge>}
       </div>
-      <p className="flex-1 text-[15px] leading-relaxed text-ink-2">{et.description}</p>
+      <p className="flex-1 text-sm leading-relaxed text-ink-2">{et.description}</p>
       <div className="flex items-center justify-between gap-2 border-t border-line-2 pt-4">
-        <Link href={`/admin/fanlar?tur=${et.slug}`} className="text-[15px] font-semibold text-primary hover:underline">{subjects} ta fan →</Link>
+        <Link href={`/admin/fanlar?tur=${et.slug}`} className="text-sm font-semibold text-primary hover:underline">{subjects} ta fan →</Link>
         <Button variant="soft" size="sm" onClick={() => setOpen(true)}><Pencil /> Tahrirlash</Button>
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -39,8 +39,8 @@ export function ExamTypeCard({ et, subjects }: { et: ExamType; subjects: number 
             <Field label="Nomi"><Input value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} /></Field>
             <Field label="Kim uchun (qisqa)"><Input value={f.short} onChange={(e) => setF({ ...f, short: e.target.value })} /></Field>
             <Field label="Tavsif"><Textarea value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} /></Field>
-            <label className="flex items-center justify-between gap-3 rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">Saytda koʻrinadi <Switch checked={f.isActive} onCheckedChange={(v) => setF({ ...f, isActive: v })} /></label>
-            <label className="flex items-center justify-between gap-3 rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">«Tez orada» belgisi <Switch checked={f.comingSoon} onCheckedChange={(v) => setF({ ...f, comingSoon: v })} /></label>
+            <label className="flex items-center justify-between gap-3 rounded-2xl bg-bg px-4 py-3 text-sm font-semibold">Saytda koʻrinadi <Switch checked={f.isActive} onCheckedChange={(v) => setF({ ...f, isActive: v })} /></label>
+            <label className="flex items-center justify-between gap-3 rounded-2xl bg-bg px-4 py-3 text-sm font-semibold">«Tez orada» belgisi <Switch checked={f.comingSoon} onCheckedChange={(v) => setF({ ...f, comingSoon: v })} /></label>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Bekor qilish</Button>

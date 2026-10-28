@@ -73,11 +73,11 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
     <div className="grid items-start gap-5 xl:grid-cols-[1fr_480px]">
       <div className="min-w-0 space-y-5">
         <Card className="p-5">
-          <p className="text-[13px] font-semibold text-muted">{question.topic ?? "Savol"}</p>
-          <p className="mt-1 text-[17px] leading-relaxed font-semibold whitespace-pre-line">{question.text}</p>
+          <p className="text-xs font-semibold text-muted">{question.topic ?? "Savol"}</p>
+          <p className="mt-1 text-base leading-relaxed font-semibold whitespace-pre-line">{question.text}</p>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {question.options.map((o, j) => (
-              <span key={j} className={cn("rounded-full px-3 py-1 text-[13px] font-medium", j === question.correctIndex ? "bg-success-soft font-bold text-success-ink" : "bg-bg text-ink-2")}>{L[j]}) {o}</span>
+              <span key={j} className={cn("rounded-full px-3 py-1 text-xs font-semibold", j === question.correctIndex ? "bg-success-soft font-bold text-success-ink" : "bg-bg text-ink-2")}>{L[j]}) {o}</span>
             ))}
           </div>
         </Card>
@@ -86,14 +86,14 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
           <div className="mb-4 flex items-center gap-3">
             <span className="flex size-10 items-center justify-center rounded-2xl bg-primary text-white"><AudioLines className="size-5" /></span>
             <div>
-              <h2 className="font-display text-xl font-bold">1. Audio</h2>
-              <p className="text-[13px] text-muted">Mikrofondan yozing yoki fayl yuklang: mp3, m4a, ogg, wav · 20 MB gacha</p>
+              <h2 className="t-h3">1. Audio</h2>
+              <p className="text-xs text-muted">Mikrofondan yozing yoki fayl yuklang: mp3, m4a, ogg, wav · 20 MB gacha</p>
             </div>
           </div>
           {st.audioUrl ? (
             <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-bg p-3 pl-4">
               <Check className="size-5 text-success" />
-              <span className="min-w-0 flex-1 truncate text-[15px] font-semibold">{st.audioUrl.split("/").pop()}</span>
+              <span className="min-w-0 flex-1 truncate text-sm font-semibold">{st.audioUrl.split("/").pop()}</span>
               <span className="text-sm font-semibold text-muted">{formatDuration(st.audioDurationSec)}</span>
               <Button variant="outline" size="sm" onClick={() => audioInput.current?.click()} disabled={!!uploading}>Almashtirish</Button>
               <AudioRecorder label="Qayta yozish" disabled={!!uploading} onDone={(f, d) => upload([f], "audio", d)} />
@@ -107,7 +107,7 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
               onClick={() => audioInput.current?.click()}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files.length) void upload([e.dataTransfer.files[0]], "audio"); }}
-              className="flex w-full flex-col items-center gap-2 rounded-[16px] border-2 border-dashed border-primary-mid/60 bg-bg px-6 py-10 transition hover:border-primary"
+              className="flex w-full flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-primary-mid/60 bg-bg px-6 py-10 transition hover:border-primary"
             >
               <Upload className="size-6 text-primary" />
               <span className="font-display text-lg font-bold">{uploading === "audio" ? "Yuklanmoqda…" : "yoki tayyor audioni tashlang / tanlang"}</span>
@@ -122,25 +122,25 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-2xl bg-accent text-ink"><ImagePlus className="size-5" /></span>
               <div>
-                <h2 className="font-display text-xl font-bold">2. Yechim rasmlari</h2>
-                <p className="text-[13px] text-muted">2–4 ta rasm. Har biri audioning qaysi soniyasida ochiladi?</p>
+                <h2 className="t-h3">2. Yechim rasmlari</h2>
+                <p className="text-xs text-muted">2–4 ta rasm. Har biri audioning qaysi soniyasida ochiladi?</p>
               </div>
             </div>
             <Button variant="soft" size="sm" disabled={!!uploading || st.images.length >= 8} onClick={() => imgInput.current?.click()}><Plus /> {uploading === "image" ? "Yuklanmoqda…" : "Rasm qoʻshish"}</Button>
             <input ref={imgInput} type="file" hidden multiple accept="image/*" onChange={(e) => e.target.files?.length && upload(e.target.files, "image")} />
           </div>
           {st.images.length === 0 ? (
-            <p className="rounded-2xl bg-bg px-4 py-6 text-center text-[15px] text-muted">Hali rasm yoʻq. Ustoz yuborgan yechim kadrlarini qoʻshing.</p>
+            <p className="rounded-2xl bg-bg px-4 py-6 text-center text-sm text-muted">Hali rasm yoʻq. Ustoz yuborgan yechim kadrlarini qoʻshing.</p>
           ) : (
             <ul className="space-y-3">
               {st.images.map((im, i) => (
-                <li key={im.url + i} className="flex flex-wrap items-center gap-3 rounded-[16px] border border-line p-3 sm:flex-nowrap">
+                <li key={im.url + i} className="flex flex-wrap items-center gap-3 rounded-2xl border border-line p-3 sm:flex-nowrap">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={im.url} alt="" className="h-16 w-24 shrink-0 rounded-xl border border-line-2 bg-bg object-contain" />
                   <Input className="h-10 min-w-0 flex-1" placeholder={`Sarlavha (masalan: ${i === 0 ? "Soddalashtirish" : "Viyet teoremasi"})`} value={im.caption} onChange={(e) => setImg(i, { caption: e.target.value })} aria-label="Rasm sarlavhasi" />
                   <div className="flex items-center gap-1.5">
                     <Input className="h-10 w-20 text-center tabular-nums" type="number" min={0} step={1} value={Math.round(im.startSec)} onChange={(e) => setImg(i, { startSec: Number(e.target.value) })} aria-label="Boshlanish soniyasi" />
-                    <span className="text-[13px] text-muted">s</span>
+                    <span className="text-xs text-muted">s</span>
                     <Button variant="outline" size="sm" title="Pleyerdagi hozirgi vaqtni olish" onClick={() => setImg(i, { startSec: Math.floor(now) })}><Clock /> {formatDuration(now)}</Button>
                     <Button variant="ghost" size="icon-sm" aria-label="Rasmni olib tashlash" onClick={() => setSt({ ...st, images: st.images.filter((_, j) => j !== i) })}><Trash2 /></Button>
                   </div>
@@ -151,7 +151,7 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
         </Card>
 
         <Card className="space-y-4 p-5">
-          <h2 className="font-display text-xl font-bold">3. Matnli izoh va muallif</h2>
+          <h2 className="t-h3">3. Matnli izoh va muallif</h2>
           <Field label="Qisqa izoh (audio ostida chiqadi)"><Textarea rows={3} value={st.note} placeholder="Viyet teoremasida yigʻindi −b/a = +4 boʻladi…" onChange={(e) => setSt({ ...st, note: e.target.value })} /></Field>
           <Field label="Ustoz (muallif)"><Input value={st.authorName} placeholder="Kamola Rahimova" onChange={(e) => setSt({ ...st, authorName: e.target.value })} /></Field>
         </Card>
@@ -159,8 +159,8 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
         <Card className="space-y-4 p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h2 className="font-display text-xl font-bold">4. Oʻxshash savol</h2>
-              <p className="text-[13px] text-muted">Tushuntirishdan keyin foydalanuvchi oʻzini tekshiradi.</p>
+              <h2 className="t-h3">4. Oʻxshash savol</h2>
+              <p className="text-xs text-muted">Tushuntirishdan keyin foydalanuvchi oʻzini tekshiradi.</p>
             </div>
             <Switch checked={!!st.similar} aria-label="Oʻxshash savol" onCheckedChange={(v) => setSt({ ...st, similar: v ? { text: "", options: ["", "", "", ""], correctIndex: 0 } : null })} />
           </div>
@@ -186,11 +186,11 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
         <Card className="overflow-hidden">
           <div className="flex items-center gap-3 border-b border-line-2 px-5 py-3.5">
             <span className="flex size-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">{(st.authorName || "U").split(" ").map((w) => w[0]).slice(0, 2).join("")}</span>
-            <span className="flex-1"><span className="block font-semibold">{st.authorName || "Ustoz"}</span><span className="block text-[13px] text-muted">Foydalanuvchi koʻradigan koʻrinish</span></span>
+            <span className="flex-1"><span className="block font-semibold">{st.authorName || "Ustoz"}</span><span className="block text-xs text-muted">Foydalanuvchi koʻradigan koʻrinish</span></span>
           </div>
           <div className="space-y-3 bg-bg p-4">
             <ExplanationPlayer audioUrl={st.audioUrl} durationSec={st.audioDurationSec} images={st.images} onTime={setNow} compact />
-            {st.note ? <div className="bubble-in max-w-[90%] bg-surface px-4 py-3 text-[15px] leading-relaxed">{st.note}</div> : null}
+            {st.note ? <div className="bubble-in max-w-[90%] bg-surface px-4 py-3 text-sm leading-relaxed">{st.note}</div> : null}
           </div>
         </Card>
         <div className="flex gap-2">

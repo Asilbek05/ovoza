@@ -1,54 +1,75 @@
 @import "tailwindcss";
 
+/*
+ * ovoza design system
+ * ─ one typeface (Onest), one type scale, one radius scale, one brand colour.
+ * Do not add ad-hoc text-[..px] / rounded-[..px] / #hex values — use the tokens below.
+ */
 @theme {
-  /* ovoza palette: warm paper, deep forest green, chartreuse highlighter */
-  --color-bg: #f6f2ea;
+  /* neutrals */
+  --color-bg: #f5f5f1;
   --color-surface: #ffffff;
-  --color-ink: #10181a;
-  --color-ink-2: #384245;
-  --color-muted: #5b6669;
-  --color-line: #e2dbcd;
-  --color-line-2: #ece7dc;
+  --color-ink: #111815;
+  --color-ink-2: #3f4a45;
+  --color-muted: #66706b;
+  --color-line: #e3e4dd;
+  --color-line-2: #eeefe9;
+
+  /* brand */
   --color-primary: #0e4a40;
-  --color-primary-deep: #072f29;
-  --color-primary-soft: #e1eee8;
-  --color-primary-mid: #8fb9ac;
+  --color-primary-deep: #08302a;
+  --color-primary-soft: #e5efeb;
+  --color-primary-mid: #9cc3b7;
+
+  /* highlighter: used sparingly (marker, "guess", CTA on dark) */
   --color-accent: #d4f04f;
-  --color-accent-deep: #c2e036;
-  --color-accent-soft: #f2f8cf;
-  --color-accent-ink: #4c5a06;
-  --color-accent-ring: #dce79a;
-  --color-success: #17884f;
-  --color-success-ink: #0f6a3c;
-  --color-success-soft: #ddf3e6;
-  --color-danger: #d6453a;
-  --color-danger-ink: #b1352c;
-  --color-danger-soft: #fde9e5;
+  --color-accent-deep: #c3e12f;
+  --color-accent-soft: #f3f9d3;
+  --color-accent-ink: #55640a;
+  --color-accent-ring: #dde99a;
+
+  /* semantic */
+  --color-success: #1b8f52;
+  --color-success-ink: #146b3e;
+  --color-success-soft: #e0f3e8;
+  --color-danger: #d13b3b;
+  --color-danger-ink: #a82a2a;
+  --color-danger-soft: #fce8e6;
+
+  /* subject tones: soft background + strong foreground, equal lightness */
+  --color-tone-sky: #2f6aa8;
+  --color-tone-sky-soft: #e4eef8;
+  --color-tone-rose: #b8456b;
+  --color-tone-rose-soft: #fae6ee;
+  --color-tone-violet: #6a52b3;
+  --color-tone-violet-soft: #ece8f8;
+  --color-tone-teal: #19768a;
+  --color-tone-teal-soft: #dff1f4;
 
   --font-display: "Onest Variable", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Onest Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
 
-  --shadow-cta: 0 12px 24px -12px rgb(14 74 64 / 0.6);
-  --shadow-float: 0 40px 80px -40px rgb(7 47 41 / 0.35);
+  /* type scale (≈1.2 ratio). Body is 17px: readable for older teachers. */
+  --text-xs: 0.8125rem;   --text-xs--line-height: 1.125rem;   /* 13 */
+  --text-sm: 0.9375rem;   --text-sm--line-height: 1.375rem;   /* 15 */
+  --text-base: 1.0625rem; --text-base--line-height: 1.625rem; /* 17 */
+  --text-lg: 1.25rem;     --text-lg--line-height: 1.75rem;    /* 20 */
+  --text-xl: 1.5rem;      --text-xl--line-height: 2rem;       /* 24 */
+  --text-2xl: 1.8125rem;  --text-2xl--line-height: 2.25rem;   /* 29 */
+  --text-3xl: 2.1875rem;  --text-3xl--line-height: 2.5rem;    /* 35 */
+  --text-4xl: 2.625rem;   --text-4xl--line-height: 2.875rem;  /* 42 */
+  --text-5xl: 3.25rem;    --text-5xl--line-height: 3.375rem;  /* 52 */
+  --text-6xl: 4rem;       --text-6xl--line-height: 4rem;      /* 64 */
+
+  --shadow-cta: 0 1px 0 rgb(255 255 255 / 0.15) inset, 0 8px 20px -10px rgb(14 74 64 / 0.55);
+  --shadow-card: 0 1px 2px rgb(17 24 21 / 0.04), 0 8px 24px -12px rgb(17 24 21 / 0.12);
+  --shadow-float: 0 30px 70px -30px rgb(8 48 42 / 0.4);
 
   --animate-wave: wave 1.1s ease-in-out infinite;
-  @keyframes wave {
-    0%, 100% { transform: scaleY(0.45); }
-    50% { transform: scaleY(1); }
-  }
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: none; }
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-  @keyframes ping-soft {
-    0% { transform: scale(1); opacity: 0.55; }
-    100% { transform: scale(2.1); opacity: 0; }
-  }
+  @keyframes wave { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes ping-soft { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.9); opacity: 0; } }
 }
 
 @layer base {
@@ -57,22 +78,35 @@
     background: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: 16px;
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: clip;
   }
-  h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.03em; }
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.025em; text-wrap: balance; }
+  p { text-wrap: pretty; }
   :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
   ::selection { background: var(--color-accent); color: var(--color-ink); }
 }
 
-@utility bubble-in { border-radius: 20px 20px 20px 6px; }
-@utility bubble-out { border-radius: 20px 20px 6px 20px; }
-@utility container-page { width: 100%; max-width: 1240px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
-/* chartreuse highlighter behind a word */
-@utility marker { background: linear-gradient(transparent 58%, var(--color-accent) 58% 92%, transparent 92%); padding: 0 0.08em; }
-/* subtle paper grain for dark sections */
+/* ── layout ── */
+@utility container-page { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }
+@utility section-y { padding-block: clamp(56px, 9vw, 112px); }
+
+/* ── headings: the ONLY heading styles in the product ── */
+@utility t-display { font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1.02; font-weight: 800; letter-spacing: -0.04em; }
+@utility t-h1 { font-size: clamp(1.8125rem, 4.5vw, 2.625rem); line-height: 1.1; font-weight: 800; letter-spacing: -0.035em; }
+@utility t-h2 { font-size: clamp(1.625rem, 3.6vw, 2.5rem); line-height: 1.12; font-weight: 800; letter-spacing: -0.03em; }
+@utility t-h3 { font-size: var(--text-lg); line-height: var(--text-lg--line-height); font-weight: 700; letter-spacing: -0.015em; }
+@utility t-eyebrow { font-size: var(--text-xs); line-height: 1; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ── speech bubbles (the brand shape) ── */
+@utility bubble-in { border-radius: 18px 18px 18px 4px; }
+@utility bubble-out { border-radius: 18px 18px 4px 18px; }
+
+/* highlighter behind a word */
+@utility marker { background: linear-gradient(transparent 62%, var(--color-accent) 62% 94%, transparent 94%); padding-inline: 0.06em; }
 @utility grain { background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px); background-size: 14px 14px; }
 
 @media (prefers-reduced-motion: reduce) {

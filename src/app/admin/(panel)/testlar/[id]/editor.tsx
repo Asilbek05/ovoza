@@ -62,14 +62,14 @@ export function TestEditor({ test, examTypes, subjects, questions, status }: { t
     <div className="grid items-start gap-5 xl:grid-cols-[1fr_360px]">
       <section className="min-w-0 space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-2xl font-bold">Savollar <span className="text-muted">{questions.length}</span></h2>
+          <h2 className="t-h3">Savollar <span className="text-muted">{questions.length}</span></h2>
           <div className="flex flex-wrap gap-2">
             <Button asChild variant="soft"><Link href={`/admin/testlar/${test.id}/import`}><Sparkles /> AI import</Link></Button>
             <Button variant="primary" onClick={() => setQ({ text: "", options: ["", "", "", ""], correctIndex: 0, topic: "" })}><Plus /> Savol</Button>
           </div>
         </div>
         {missingAudio > 0 && questions.length > 0 ? (
-          <p className="rounded-2xl bg-accent-soft px-4 py-3 text-[15px] font-medium text-accent-ink"><b className="font-bold">{missingAudio} ta savolda audio yoʻq.</b> Ustozlar bergan audiolarni savol ustiga bosib yuklang.</p>
+          <p className="rounded-2xl bg-accent-soft px-4 py-3 text-sm font-semibold text-accent-ink"><b className="font-bold">{missingAudio} ta savolda audio yoʻq.</b> Ustozlar bergan audiolarni savol ustiga bosib yuklang.</p>
         ) : null}
         {questions.length === 0 ? (
           <EmptyState icon={<Upload className="size-6" />} title="Hali savol yoʻq" text="Savollarni Word, PDF yoki matndan AI orqali import qiling yoki qoʻlda qoʻshing." action={<Button asChild variant="primary"><Link href={`/admin/testlar/${test.id}/import`}><Sparkles /> AI import</Link></Button>} />
@@ -82,10 +82,10 @@ export function TestEditor({ test, examTypes, subjects, questions, status }: { t
                   <Card className="flex flex-wrap gap-3 p-4 sm:flex-nowrap sm:p-5">
                     <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft font-display font-bold text-primary-deep">{i + 1}</span>
                     <div className="min-w-0 flex-1 basis-[calc(100%-52px)] sm:basis-0">
-                      <p className="text-[15px] leading-relaxed font-semibold whitespace-pre-line">{x.text}</p>
+                      <p className="text-sm leading-relaxed font-semibold whitespace-pre-line">{x.text}</p>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {x.options.map((o, j) => (
-                          <span key={j} className={cn("rounded-full px-3 py-1 text-[13px] font-medium", j === x.correctIndex ? "bg-success-soft font-bold text-success-ink" : "bg-bg text-ink-2")}>{L[j]}) {o}</span>
+                          <span key={j} className={cn("rounded-full px-3 py-1 text-xs font-semibold", j === x.correctIndex ? "bg-success-soft font-bold text-success-ink" : "bg-bg text-ink-2")}>{L[j]}) {o}</span>
                         ))}
                       </div>
                       <div className="mt-3 flex flex-wrap items-center gap-1.5">
@@ -114,13 +114,13 @@ export function TestEditor({ test, examTypes, subjects, questions, status }: { t
 
       <aside className="space-y-4 xl:sticky xl:top-6">
         <Card className="space-y-4 p-5">
-          <h2 className="font-display text-xl font-bold">Test sozlamalari</h2>
+          <h2 className="t-h3">Test sozlamalari</h2>
           <Field label="Fan"><SubjectSelect examTypes={examTypes} subjects={subjects} value={meta.subjectId} onChange={(v) => setMeta({ ...meta, subjectId: v })} /></Field>
           <Field label="Nomi"><Input value={meta.title} onChange={(e) => setMeta({ ...meta, title: e.target.value })} /></Field>
           <Field label="Tavsif"><Textarea value={meta.description} onChange={(e) => setMeta({ ...meta, description: e.target.value })} /></Field>
           <Field label="Vaqt (daqiqa)"><Input type="number" min={1} value={meta.durationMin} onChange={(e) => setMeta({ ...meta, durationMin: Number(e.target.value) })} /></Field>
-          <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">Bepul <Switch checked={meta.isFree} onCheckedChange={(v) => setMeta({ ...meta, isFree: v })} /></label>
-          <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">Saytda chop etilgan <Switch checked={meta.isPublished} onCheckedChange={(v) => setMeta({ ...meta, isPublished: v })} /></label>
+          <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-sm font-semibold">Bepul <Switch checked={meta.isFree} onCheckedChange={(v) => setMeta({ ...meta, isFree: v })} /></label>
+          <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-sm font-semibold">Saytda chop etilgan <Switch checked={meta.isPublished} onCheckedChange={(v) => setMeta({ ...meta, isPublished: v })} /></label>
           <Button className="w-full" disabled={pending} onClick={() => run(() => saveTest({ id: test.id, ...meta, subjectId: Number(meta.subjectId) }), "Saqlandi")}>Saqlash</Button>
           <div className="grid grid-cols-2 gap-2">
             <Button variant="outline" disabled={pending} onClick={async () => { const r = await run(() => duplicateTest(test.id), "Nusxa yaratildi"); if (r.ok && r.data) router.push(`/admin/testlar/${r.data.id}`); }}><Copy /> Nusxalash</Button>

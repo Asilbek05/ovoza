@@ -50,15 +50,15 @@ export function SubjectsManager({ examTypes, rows, initialTab }: { examTypes: Ex
             return (
               <Card key={r.id} className={cn("flex flex-col gap-4 p-5 transition", !r.isActive && "opacity-60")}>
                 <div className="flex items-start gap-3">
-                  <span className={cn("flex size-12 shrink-0 items-center justify-center rounded-2xl font-display text-lg font-extrabold", c.icon)}>{r.name.slice(0, 1)}</span>
+                  <span className={cn("flex size-12 shrink-0 items-center justify-center rounded-2xl font-display text-lg font-bold", c.icon)}>{r.name.slice(0, 1)}</span>
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate font-display text-lg font-bold">{r.name}</h3>
+                    <h3 className="truncate t-h3">{r.name}</h3>
                     <Link href={`/admin/testlar?fan=${r.id}`} className="text-sm font-semibold text-primary hover:underline">{r.tests} ta test</Link>
                   </div>
                   <Switch checked={r.isActive} aria-label="Faol" onCheckedChange={(v) => run(() => toggleSubject(r.id, v), v ? "Fan yoqildi" : "Fan oʻchirib qoʻyildi")} />
                 </div>
                 <div className="flex items-center justify-between border-t border-line-2 pt-3">
-                  <span className="text-[13px] font-medium text-muted">/{current?.slug}/{r.slug} · tartib {r.sort}</span>
+                  <span className="text-xs font-semibold text-muted">/{current?.slug}/{r.slug} · tartib {r.sort}</span>
                   <span className="flex gap-1">
                     <Button variant="ghost" size="icon-sm" aria-label="Tahrirlash" onClick={() => setForm({ id: r.id, name: r.name, slug: r.slug, color: r.color as SubjectColor, isActive: r.isActive, sort: r.sort })}><Pencil /></Button>
                     <Confirm
@@ -100,7 +100,7 @@ export function SubjectsManager({ examTypes, rows, initialTab }: { examTypes: Ex
                         role="radio"
                         aria-checked={form.color === k}
                         onClick={() => setForm({ ...form, color: k })}
-                        className={cn("flex h-11 items-center gap-2 rounded-full border px-3 text-sm font-semibold", form.color === k ? "border-primary ring-2 ring-primary/25" : "border-line")}
+                        className={cn("flex h-11 items-center gap-2 rounded-xl border px-3 text-sm font-semibold", form.color === k ? "border-primary ring-2 ring-primary/25" : "border-line")}
                       >
                         <span className={cn("size-5 rounded-full", SUBJECT_COLORS[k].icon)} /> {SUBJECT_COLOR_NAMES[k]}
                       </button>
@@ -109,7 +109,7 @@ export function SubjectsManager({ examTypes, rows, initialTab }: { examTypes: Ex
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <Field label="Tartib raqami"><Input type="number" min={0} value={form.sort} onChange={(e) => setForm({ ...form, sort: Number(e.target.value) })} /></Field>
-                  <label className="mt-7 flex h-11 items-center justify-between gap-2 rounded-[14px] bg-bg px-4 text-[15px] font-semibold">Faol <Switch checked={form.isActive} onCheckedChange={(v) => setForm({ ...form, isActive: v })} /></label>
+                  <label className="mt-7 flex h-11 items-center justify-between gap-2 rounded-xl bg-bg px-4 text-sm font-semibold">Faol <Switch checked={form.isActive} onCheckedChange={(v) => setForm({ ...form, isActive: v })} /></label>
                 </div>
               </div>
               <DialogFooter>

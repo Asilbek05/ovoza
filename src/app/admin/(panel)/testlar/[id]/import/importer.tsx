@@ -61,7 +61,7 @@ export function Importer({ testId, ai }: { testId: number; ai: boolean }) {
 
   return (
     <div className="space-y-5">
-      <p className="text-[14px] text-muted">
+      <p className="text-sm text-muted">
         Namuna fayllar: <a className="font-semibold text-primary underline underline-offset-2" href="/namuna/savollar-namuna.txt" download>matn (.txt)</a> ·{" "}
         <a className="font-semibold text-primary underline underline-offset-2" href="/namuna/savollar-namuna.json" download>JSON</a>. To‘g‘ri javob «Javob: B», «*C) ...» yoki JSON orqali belgilanadi; Word/PDF murakkab boʻlsa AI ishlatiladi.
       </p>
@@ -69,7 +69,7 @@ export function Importer({ testId, ai }: { testId: number; ai: boolean }) {
         <Tabs value={mode} onValueChange={(v) => setMode(v as "text" | "file")}>
           <TabsList><TabsTrigger value="text">Matn joylash</TabsTrigger><TabsTrigger value="file">Fayl yuklash</TabsTrigger></TabsList>
           <TabsContent value="text" className="mt-4">
-            <Textarea rows={10} value={text} onChange={(e) => setText(e.target.value)} placeholder={SAMPLE} className="font-mono text-[14px]" aria-label="Savollar matni" />
+            <Textarea rows={10} value={text} onChange={(e) => setText(e.target.value)} placeholder={SAMPLE} className="font-mono text-sm" aria-label="Savollar matni" />
             <button type="button" className="mt-2 text-sm font-semibold text-primary hover:underline" onClick={() => setText(SAMPLE)}>Namunani qoʻyish</button>
           </TabsContent>
           <TabsContent value="file" className="mt-4">
@@ -79,7 +79,7 @@ export function Importer({ testId, ai }: { testId: number; ai: boolean }) {
               onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
               onDragLeave={() => setDrag(false)}
               onDrop={(e) => { e.preventDefault(); setDrag(false); const f = e.dataTransfer.files[0]; if (f) setFile(f); }}
-              className={cn("flex w-full flex-col items-center gap-3 rounded-[18px] border-2 border-dashed px-6 py-12 text-center transition", drag ? "border-primary bg-primary-soft" : "border-primary-mid/60 bg-bg hover:border-primary")}
+              className={cn("flex w-full flex-col items-center gap-3 rounded-2xl border-2 border-dashed px-6 py-12 text-center transition", drag ? "border-primary bg-primary-soft" : "border-primary-mid/60 bg-bg hover:border-primary")}
             >
               <span className="flex size-14 items-center justify-center rounded-2xl bg-primary text-white"><FileUp className="size-6" /></span>
               <span className="font-display text-lg font-bold">{file ? file.name : "Faylni shu yerga tashlang yoki tanlang"}</span>
@@ -95,13 +95,13 @@ export function Importer({ testId, ai }: { testId: number; ai: boolean }) {
           <Button variant="soft" disabled={!ai || !!busy || (mode === "text" ? !text.trim() : !file)} onClick={() => parse("ai")} title={ai ? "" : "ANTHROPIC_API_KEY sozlanmagan"}>
             <Sparkles /> {busy === "ai" ? "AI oʻqiyapti…" : "AI bilan ajratish"}
           </Button>
-          <span className="text-[13px] text-muted">{ai ? "Oddiy format avtomatik taniladi; murakkab hujjatlar uchun AI." : "AI uchun .env da ANTHROPIC_API_KEY kerak. Oddiy «1. … A) … Javob: B» formati AI siz ham ishlaydi."}</span>
+          <span className="text-xs text-muted">{ai ? "Oddiy format avtomatik taniladi; murakkab hujjatlar uchun AI." : "AI uchun .env da ANTHROPIC_API_KEY kerak. Oddiy «1. … A) … Javob: B» formati AI siz ham ishlaydi."}</span>
         </div>
       </Card>
 
       {items ? (
         <section className="space-y-3">
-          <div className="sticky top-16 z-10 flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-line bg-surface/95 p-3 pl-5 backdrop-blur lg:top-4">
+          <div className="sticky top-16 z-10 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-surface/95 p-3 pl-5 backdrop-blur lg:top-4">
             <div className="flex flex-wrap items-center gap-2">
               <span className="font-display text-lg font-bold">{items.length} ta savol</span>
               <Badge tone="gray">{source === "ai" ? "AI" : source === "json" ? "JSON" : "format boʻyicha"}</Badge>

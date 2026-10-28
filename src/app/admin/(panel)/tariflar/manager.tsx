@@ -28,22 +28,22 @@ export function PlansManager({ plans }: { plans: Plan[] }) {
       <div className="space-y-7">
         {groups.map(({ a, items }) => (
           <section key={a}>
-            <h2 className="mb-3 font-display text-xl font-bold">{AUD[a]}</h2>
+            <h2 className="mb-3 t-h3">{AUD[a]}</h2>
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {items.map((p) => (
                 <Card key={p.id} className={cn("flex flex-col gap-3 p-5", p.isHighlighted && "border-primary ring-2 ring-primary/15", !p.isActive && "opacity-60")}>
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <h3 className="font-display text-lg font-bold">{p.name}</h3>
-                      <p className="font-display text-2xl font-extrabold">{formatPrice(p.priceUzs)} <span className="text-sm font-semibold text-muted">{p.priceNote}</span></p>
+                      <h3 className="t-h3">{p.name}</h3>
+                      <p className="font-display text-2xl font-bold">{formatPrice(p.priceUzs)} <span className="text-sm font-semibold text-muted">{p.priceNote}</span></p>
                     </div>
                     <div className="flex flex-col items-end gap-1">
                       {p.isHighlighted ? <Badge tone="solid"><Star className="size-3.5" /> asosiy</Badge> : null}
                       {!p.isActive ? <Badge tone="gray">nofaol</Badge> : null}
                     </div>
                   </div>
-                  <p className="text-[13px] font-semibold text-muted">{p.periodDays ? `${p.periodDays} kun` : "Bir martalik"}{p.testsLimit ? ` · ${p.testsLimit} ta test` : ""}</p>
-                  <ul className="flex-1 space-y-1 text-[14px] text-ink-2">{p.features.map((x) => <li key={x}>• {x}</li>)}</ul>
+                  <p className="text-xs font-semibold text-muted">{p.periodDays ? `${p.periodDays} kun` : "Bir martalik"}{p.testsLimit ? ` · ${p.testsLimit} ta test` : ""}</p>
+                  <ul className="flex-1 space-y-1 text-sm text-ink-2">{p.features.map((x) => <li key={x}>• {x}</li>)}</ul>
                   <div className="flex justify-end gap-1 border-t border-line-2 pt-3">
                     <Button variant="ghost" size="sm" onClick={() => setF({ ...p, audience: p.audience as Aud, features: p.features.join("\n") })}><Pencil /> Tahrirlash</Button>
                     <Confirm title={`«${p.name}» tarifini oʻchirasizmi?`} onConfirm={async () => { await run(() => deletePlan(p.id), "Tarif oʻchirildi"); }} trigger={<Button variant="ghost" size="icon-sm" aria-label="Oʻchirish" className="text-danger-ink hover:bg-danger-soft"><Trash2 /></Button>} />
@@ -68,8 +68,8 @@ export function PlansManager({ plans }: { plans: Plan[] }) {
                 <Field label="Testlar soni" hint="Boʻsh = cheksiz"><Input type="number" min={1} value={f.testsLimit ?? ""} onChange={(e) => setF({ ...f, testsLimit: e.target.value ? Number(e.target.value) : null })} /></Field>
                 <Field label="Tartib"><Input type="number" min={0} value={f.sort} onChange={(e) => setF({ ...f, sort: Number(e.target.value) })} /></Field>
                 <Field label="Imkoniyatlar (har biri yangi qatorda)" className="sm:col-span-2"><Textarea rows={4} value={f.features} onChange={(e) => setF({ ...f, features: e.target.value })} /></Field>
-                <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">Ajratib koʻrsatish <Switch checked={f.isHighlighted} onCheckedChange={(v) => setF({ ...f, isHighlighted: v })} /></label>
-                <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">Faol <Switch checked={f.isActive} onCheckedChange={(v) => setF({ ...f, isActive: v })} /></label>
+                <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-sm font-semibold">Ajratib koʻrsatish <Switch checked={f.isHighlighted} onCheckedChange={(v) => setF({ ...f, isHighlighted: v })} /></label>
+                <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-sm font-semibold">Faol <Switch checked={f.isActive} onCheckedChange={(v) => setF({ ...f, isActive: v })} /></label>
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setF(null)}>Bekor qilish</Button>

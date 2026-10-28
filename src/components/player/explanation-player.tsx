@@ -116,13 +116,13 @@ export function ExplanationPlayer({
               setSpeed(n);
               if (audio.current) audio.current.playbackRate = SPEEDS[n];
             }}
-            className="h-8 min-w-[52px] shrink-0 rounded-full bg-white/20 px-2 text-[13px] font-bold hover:bg-white/30"
+            className="h-8 min-w-[52px] shrink-0 rounded-full bg-white/20 px-2 text-xs font-bold hover:bg-white/30"
             aria-label="Tezlik"
           >
             {SPEEDS[speed]}×
           </button>
         </div>
-        <div className="mt-1 flex items-center justify-between pr-1 pl-[62px] text-[13px] font-medium text-white/85">
+        <div className="mt-1 flex items-center justify-between pr-1 pl-[62px] text-xs font-semibold text-white/85">
           <span className="tabular-nums">{formatDuration(t)} / {formatDuration(dur)}</span>
           {img?.caption ? <span className="truncate pl-3">{img.caption}</span> : null}
         </div>
@@ -145,10 +145,10 @@ export function ExplanationPlayer({
       {/* Solution images bubble */}
       {sorted.length ? (
         <div className={cn("bubble-in w-full max-w-[560px] self-start bg-surface p-2.5", compact && "max-w-none")}>
-          <div className="relative overflow-hidden rounded-[16px] border border-line-2 bg-bg">
+          <div className="relative overflow-hidden rounded-2xl border border-line-2 bg-bg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img key={img?.url} src={img?.url} alt={img?.caption || `Yechim rasmi ${active + 1}`} className="aspect-[8/5] w-full object-contain" />
-            <span className="absolute top-2.5 right-2.5 rounded-full bg-ink/80 px-2.5 py-1 text-[12px] font-bold text-white">{active + 1} / {sorted.length}</span>
+            <span className="absolute top-2.5 right-2.5 rounded-full bg-ink/80 px-2.5 py-1 text-xs font-bold text-white">{active + 1} / {sorted.length}</span>
           </div>
           <div className="mt-2 grid gap-2" style={{ gridTemplateColumns: `repeat(${sorted.length}, minmax(0, 1fr))` }}>
             {sorted.map((im, i) => (
@@ -157,12 +157,12 @@ export function ExplanationPlayer({
                 key={i}
                 onClick={() => { seek(im.startSec); setManual(i); }}
                 className={cn(
-                  "flex min-h-12 flex-col items-center justify-center rounded-[12px] border-2 px-1 py-1.5 text-[12px] leading-tight font-semibold transition",
+                  "flex min-h-12 min-w-0 flex-col items-center justify-center rounded-xl border-2 px-1.5 py-1.5 text-xs leading-tight font-semibold transition",
                   i === active ? "border-primary bg-primary-soft text-primary-deep" : "border-line-2 bg-surface text-ink-2 hover:border-primary-mid",
                 )}
               >
                 <span className="tabular-nums">{formatDuration(im.startSec)}</span>
-                <span className="line-clamp-1">{im.caption || `Rasm ${i + 1}`}</span>
+                <span className="w-full truncate">{im.caption || `Rasm ${i + 1}`}</span>
               </button>
             ))}
           </div>
@@ -170,11 +170,11 @@ export function ExplanationPlayer({
       ) : null}
 
       {broken ? (
-        <div role="alert" className="bubble-in flex items-center gap-2 self-start bg-danger-soft px-4 py-3 text-[15px] font-semibold text-danger-ink">Audio yuklanmadi. Internetni tekshirib, sahifani yangilang.</div>
+        <div role="alert" className="bubble-in flex items-center gap-2 self-start bg-danger-soft px-4 py-3 text-sm font-semibold text-danger-ink">Audio yuklanmadi. Internetni tekshirib, sahifani yangilang.</div>
       ) : null}
 
       {!audioUrl && !sorted.length ? (
-        <div className="bubble-in flex items-center gap-2 self-start bg-surface px-4 py-3 text-[15px] text-muted"><RotateCcw className="size-4" /> Tushuntirish hali yuklanmagan</div>
+        <div className="bubble-in flex items-center gap-2 self-start bg-surface px-4 py-3 text-sm text-muted"><RotateCcw className="size-4" /> Tushuntirish hali yuklanmagan</div>
       ) : null}
     </div>
   );

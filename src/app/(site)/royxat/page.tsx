@@ -10,7 +10,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
   if (await getCurrentUser()) redirect(next || "/kabinet");
   return (
     <AuthCard mode="register" next={next}>
-      <p className="mt-6 text-center text-[15px] text-muted">Hisobingiz bormi? <Link href={`/kirish${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="font-bold text-primary hover:underline">Kirish</Link></p>
+      <p className="mt-6 text-center text-sm text-muted">Hisobingiz bormi? <Link href={`/kirish${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="font-bold text-primary hover:underline">Kirish</Link></p>
     </AuthCard>
   );
 }

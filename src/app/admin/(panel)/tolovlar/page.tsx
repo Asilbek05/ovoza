@@ -29,9 +29,9 @@ export default async function OrdersPage() {
         actions={<Button asChild variant="outline"><a href="/admin/export/orders" download><Download /> CSV</a></Button>}
       />
       <div className="mb-5 grid grid-cols-3 gap-3">
-        <Card className="p-5"><span className="block text-sm font-semibold text-muted">Tushum</span><span className="mt-1 block font-display text-2xl font-extrabold sm:text-3xl">{formatPrice(revenue)}</span></Card>
-        <Card className="p-5"><span className="block text-sm font-semibold text-muted">Toʻlangan</span><span className="mt-1 block font-display text-2xl font-extrabold sm:text-3xl">{paid.length}</span></Card>
-        <Card className={`p-5 ${pending.length ? "border-accent bg-accent-soft" : ""}`}><span className="block text-sm font-semibold text-muted">Kutilmoqda</span><span className="mt-1 block font-display text-2xl font-extrabold sm:text-3xl">{pending.length}</span></Card>
+        <Card className="p-5"><span className="block text-sm font-semibold text-muted">Tushum</span><span className="mt-1 block font-display text-2xl font-bold sm:text-3xl">{formatPrice(revenue)}</span></Card>
+        <Card className="p-5"><span className="block text-sm font-semibold text-muted">Toʻlangan</span><span className="mt-1 block font-display text-2xl font-bold sm:text-3xl">{paid.length}</span></Card>
+        <Card className={`p-5 ${pending.length ? "border-accent bg-accent-soft" : ""}`}><span className="block text-sm font-semibold text-muted">Kutilmoqda</span><span className="mt-1 block font-display text-2xl font-bold sm:text-3xl">{pending.length}</span></Card>
       </div>
       {rows.length === 0 ? (
         <EmptyState icon={<CreditCard className="size-6" />} title="Hali buyurtma yoʻq" text="Foydalanuvchi tarif tanlaganda shu yerda paydo boʻladi." />
@@ -43,12 +43,12 @@ export default async function OrdersPage() {
               {rows.map(({ o, user, phone, plan }) => (
                 <tr key={o.id}>
                   <Td className="text-muted tabular-nums">{o.id}</Td>
-                  <Td><span className="block font-semibold">{user}</span><span className="block text-[13px] text-muted tabular-nums">+{phone}</span></Td>
+                  <Td><span className="block font-semibold">{user}</span><span className="block text-xs text-muted tabular-nums">+{phone}</span></Td>
                   <Td>{plan}</Td>
                   <Td className="text-right font-semibold whitespace-nowrap">{formatPrice(o.amountUzs)}</Td>
                   <Td className="capitalize">{o.provider}</Td>
                   <Td><Badge tone={o.status === "paid" ? "green" : o.status === "failed" ? "red" : "yellow"}>{o.status === "paid" ? "toʻlangan" : o.status === "failed" ? "bekor" : "kutilmoqda"}</Badge></Td>
-                  <Td className="whitespace-nowrap text-[14px] text-muted">{o.createdAt.toLocaleString("uz-UZ", { dateStyle: "short", timeStyle: "short" })}</Td>
+                  <Td className="whitespace-nowrap text-sm text-muted">{o.createdAt.toLocaleString("uz-UZ", { dateStyle: "short", timeStyle: "short" })}</Td>
                   <Td className="text-right">{o.status === "pending" ? <OrderActions id={o.id} /> : null}</Td>
                 </tr>
               ))}

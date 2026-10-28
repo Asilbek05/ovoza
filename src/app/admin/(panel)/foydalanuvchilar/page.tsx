@@ -42,7 +42,7 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
                   <Td className="whitespace-nowrap tabular-nums">+{u.phone}</Td>
                   <Td>{u.audience === "applicant" ? "Abituriyent" : "Oʻqituvchi"}</Td>
                   <Td className="text-center">{attempts}</Td>
-                  <Td>{sub ? <span className="flex flex-col gap-1"><Badge tone="green" className="self-start">{sub}</Badge>{subEnds ? <span className="text-[12px] text-muted">{new Date(subEnds).toLocaleDateString("uz-UZ")} gacha</span> : null}</span> : <span className="text-muted">—</span>}</Td>
+                  <Td>{sub ? <span className="flex flex-col gap-1"><Badge tone="green" className="self-start">{sub}</Badge>{subEnds ? <span className="text-xs text-muted">{new Date(subEnds).toLocaleDateString("uz-UZ")} gacha</span> : null}</span> : <span className="text-muted">—</span>}</Td>
                   <Td className="text-right"><UserActions userId={u.id} name={u.name} hasSub={!!sub} plans={plans.filter((p) => p.priceUzs > 0)} /></Td>
                 </tr>
               ))}

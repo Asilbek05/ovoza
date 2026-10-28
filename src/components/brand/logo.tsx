@@ -21,7 +21,7 @@ export function LogoMark({ className, tone = "dark" }: { className?: string; ton
 }
 
 export function Wordmark({ className }: { className?: string }) {
-  return <span className={cn("font-display text-[26px] leading-none font-extrabold tracking-[-0.045em]", className)}>ovoza</span>;
+  return <span className={cn("font-display text-xl leading-none font-bold ", className)}>ovoza</span>;
 }
 
 export function Logo({ href = "/", className, suffix, tone = "dark" }: { href?: string; className?: string; suffix?: string; tone?: "dark" | "light" }) {
@@ -29,7 +29,7 @@ export function Logo({ href = "/", className, suffix, tone = "dark" }: { href?: 
     <Link href={href} className={cn("inline-flex items-center gap-2.5", tone === "dark" ? "text-ink" : "text-white", className)} aria-label="ovoza — bosh sahifa">
       <LogoMark tone={tone === "dark" ? "dark" : "light"} />
       <Wordmark />
-      {suffix ? <span className="ml-0.5 rounded-md bg-ink px-1.5 py-0.5 text-[10px] font-bold tracking-widest text-white uppercase">{suffix}</span> : null}
+      {suffix ? <span className="ml-0.5 rounded-md bg-ink px-1.5 py-0.5 text-xs font-bold tracking-widest text-white uppercase">{suffix}</span> : null}
     </Link>
   );
 }

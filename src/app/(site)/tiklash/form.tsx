@@ -45,18 +45,18 @@ export function ResetForm() {
       </Field>
       {step === 2 ? (
         <>
-          <Field label="SMS kod" htmlFor="code"><Input id="code" inputMode="numeric" autoComplete="one-time-code" maxLength={6} required value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} className="h-12 text-center font-display text-2xl tracking-[0.4em]" /></Field>
+          <Field label="SMS kod" htmlFor="code"><Input id="code" inputMode="numeric" autoComplete="one-time-code" maxLength={6} required value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} className="h-12 text-center font-display text-2xl " /></Field>
           <Field label="Yangi parol" htmlFor="pw" hint="Kamida 6 belgi"><Input id="pw" type="password" autoComplete="new-password" minLength={6} required value={pw} onChange={(e) => setPw(e.target.value)} className="h-12 text-base" /></Field>
         </>
       ) : null}
       {msg ? (
-        <div role="status" className={cn("rounded-[14px] px-4 py-3 text-[15px] font-semibold", msg.ok ? "bg-success-soft text-success-ink" : "bg-danger-soft text-danger-ink")}>
+        <div role="status" className={cn("rounded-xl px-4 py-3 text-sm font-semibold", msg.ok ? "bg-success-soft text-success-ink" : "bg-danger-soft text-danger-ink")}>
           {msg.message}
-          {msg.devCode ? <span className="mt-1 block font-display text-2xl tracking-[0.3em]">{msg.devCode}</span> : null}
+          {msg.devCode ? <span className="mt-1 block font-display text-2xl ">{msg.devCode}</span> : null}
         </div>
       ) : null}
       <Button type="submit" variant="primary" size="lg" className="w-full" disabled={pending}>{pending ? "Kuting…" : step === 1 ? "Kod yuborish" : "Parolni yangilash"}</Button>
-      {step === 2 ? <button type="button" onClick={() => { setStep(1); setMsg(null); setCode(""); }} className="w-full text-center text-[15px] font-semibold text-muted hover:text-ink">Raqamni oʻzgartirish</button> : null}
+      {step === 2 ? <button type="button" onClick={() => { setStep(1); setMsg(null); setCode(""); }} className="w-full text-center text-sm font-semibold text-muted hover:text-ink">Raqamni oʻzgartirish</button> : null}
     </form>
   );
 }

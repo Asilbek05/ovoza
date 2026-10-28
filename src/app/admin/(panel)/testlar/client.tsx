@@ -66,7 +66,7 @@ export function NewTestButton({ examTypes, subjects, defaultSubjectId }: { examT
             <Field label="Test nomi"><Input value={f.title} placeholder="Matematika · variant №3" onChange={(e) => setF({ ...f, title: e.target.value })} /></Field>
             <Field label="Qisqa tavsif"><Textarea value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} /></Field>
             <Field label="Vaqt (daqiqa)"><Input type="number" min={1} value={f.durationMin} onChange={(e) => setF({ ...f, durationMin: Number(e.target.value) })} /></Field>
-            <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-[15px] font-semibold">Bepul test <Switch checked={f.isFree} onCheckedChange={(v) => setF({ ...f, isFree: v })} /></label>
+            <label className="flex items-center justify-between rounded-2xl bg-bg px-4 py-3 text-sm font-semibold">Bepul test <Switch checked={f.isFree} onCheckedChange={(v) => setF({ ...f, isFree: v })} /></label>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Bekor qilish</Button>
