@@ -1,21 +1,18 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-/**
- * ovoza mark: a voice source (the “o”) with two concentric sound arcs.
- * Same geometry as src/app/icon.svg — keep them in sync.
- */
+const BUBBLE = "M344 220h336c92.8 0 168 75.2 168 168v176c0 92.8-75.2 168-168 168H460L268 846c-12 8.6-28.8 0-28.8-14.8V700c-39-30-63.2-77-63.2-136V388c0-92.8 75.2-168 168-168z";
+const BARS = [130, 250, 366, 236, 118];
+
+/** ovoza mark: a voice message — speech bubble with a waveform. Same geometry as public/brand/ovoza-mark.svg. */
 export function LogoMark({ className, tone = "dark" }: { className?: string; tone?: "dark" | "light" }) {
-  const bg = tone === "dark" ? "#0E4A40" : "#D4F04F";
+  const tile = tone === "dark" ? "#0E4A40" : "#D4F04F";
   const fg = tone === "dark" ? "#D4F04F" : "#0E4A40";
   return (
-    <svg viewBox="0 0 64 64" className={cn("size-9 shrink-0", className)} aria-hidden>
-      <rect width="64" height="64" rx="18" fill={bg} />
-      <g transform="translate(1.25 0)" fill="none" stroke={fg} strokeLinecap="round" strokeWidth="4.5">
-        <circle cx="22" cy="32" r="8.5" fill={fg} stroke="none" />
-        <path d="M35 21.1A17 17 0 0 1 35 42.9" />
-        <path d="M41.9 15.3A26 26 0 0 1 41.9 48.7" opacity=".5" />
-      </g>
+    <svg viewBox="0 0 1024 1024" className={cn("size-9 shrink-0", className)} aria-hidden>
+      <rect width="1024" height="1024" rx="232" fill={tile} />
+      <path d={BUBBLE} fill={fg} />
+      {BARS.map((h, i) => <rect key={i} x={312 + i * 100 - 26} y={470 - h / 2} width="52" height={h} rx="26" fill={tile} />)}
     </svg>
   );
 }
