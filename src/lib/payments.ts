@@ -1,6 +1,6 @@
 import "server-only";
 
-export const siteUrl = () => (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+export const siteUrl = () => (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001").replace(/\/$/, "");
 
 export const paymeConfigured = () => Boolean(process.env.PAYME_MERCHANT_ID && process.env.PAYME_KEY);
 export const clickConfigured = () => Boolean(process.env.CLICK_SERVICE_ID && process.env.CLICK_MERCHANT_ID && process.env.CLICK_SECRET_KEY);
