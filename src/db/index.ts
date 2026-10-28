@@ -3,7 +3,7 @@ import { drizzle as drizzlePglite, type PgliteDatabase } from "drizzle-orm/pglit
 import { drizzle as drizzlePg } from "drizzle-orm/postgres-js";
 import * as schema from "./schema";
 import { DDL } from "./ddl";
-import { seed, seedExtra } from "./seed";
+import { seed, seedExtra, seedDemoAudio } from "./seed";
 
 export type DB = PgliteDatabase<typeof schema>;
 
@@ -20,6 +20,7 @@ async function create(): Promise<DB> {
     await client.unsafe(DDL);
     db = drizzlePg(client, { schema }) as unknown as DB;
   } else {
+    if (process.env.VERCEL) throw new Error("Vercel'da DATABASE_URL majburiy: lokal PGlite bazasi u yerda saqlanib qolmaydi. README → «Internetga chiqarish» boʻlimiga qarang.");
     const { PGlite } = await import("@electric-sql/pglite");
     const client = new PGlite(process.env.PGLITE_DIR ?? "./.pglite");
     await client.exec(DDL);
@@ -27,6 +28,7 @@ async function create(): Promise<DB> {
   }
   await seed(db);
   await seedExtra(db);
+  await seedDemoAudio(db);
   return db;
 }
 

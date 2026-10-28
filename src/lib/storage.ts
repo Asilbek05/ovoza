@@ -30,6 +30,7 @@ export async function saveUpload(file: File, folder: "audio" | "images") {
     return sb.storage.from(bucket).getPublicUrl(name).data.publicUrl;
   }
 
+  if (process.env.VERCEL) throw new Error("Vercel'da fayl yuklash uchun Supabase Storage sozlanishi shart (SUPABASE_URL va SUPABASE_SERVICE_ROLE_KEY).");
   const full = path.join(UPLOAD_DIR, name);
   await fs.mkdir(path.dirname(full), { recursive: true });
   await fs.writeFile(full, bytes);

@@ -1,5 +1,5 @@
 import {
-  pgTable, serial, integer, text, boolean, timestamp, jsonb, uuid, real, primaryKey, uniqueIndex,
+  pgTable, serial, integer, text, boolean, timestamp, jsonb, uuid, real, primaryKey, uniqueIndex, bigint,
 } from "drizzle-orm/pg-core";
 
 export const examTypes = pgTable("exam_types", {
@@ -147,6 +147,7 @@ export const subscriptions = pgTable("subscriptions", {
   endsAt: timestamp("ends_at", { withTimezone: true }),
   testsLeft: integer("tests_left"),
   status: text("status").notNull().default("active"),
+  orderId: integer("order_id"),
 });
 
 export const orders = pgTable("orders", {
@@ -175,3 +176,28 @@ export type ExplanationImage = typeof explanationImages.$inferSelect;
 export type SimilarQuestion = typeof similarQuestions.$inferSelect;
 export type Plan = typeof plans.$inferSelect;
 export type User = typeof users.$inferSelect;
+
+export const paymentTransactions = pgTable(
+  "payment_transactions",
+  {
+    id: serial("id").primaryKey(),
+    provider: text("provider").notNull(),
+    providerTransId: text("provider_trans_id").notNull(),
+    orderId: integer("order_id").notNull().references(() => orders.id, { onDelete: "cascade" }),
+    amountUzs: integer("amount_uzs").notNull(),
+    state: integer("state").notNull().default(1),
+    reason: integer("reason"),
+    createTime: bigint("create_time", { mode: "number" }).notNull(),
+    performTime: bigint("perform_time", { mode: "number" }).notNull().default(0),
+    cancelTime: bigint("cancel_time", { mode: "number" }).notNull().default(0),
+  },
+  (t) => [uniqueIndex("ptx_provider_id").on(t.provider, t.providerTransId)],
+);
+
+export const otpCodes = pgTable("otp_codes", {
+  phone: text("phone").primaryKey(),
+  codeHash: text("code_hash").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  attempts: integer("attempts").notNull().default(0),
+  lastSent: timestamp("last_sent", { withTimezone: true }).notNull().defaultNow(),
+});

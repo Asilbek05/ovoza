@@ -147,4 +147,26 @@ CREATE INDEX IF NOT EXISTS attempts_test ON attempts(test_id);
 CREATE INDEX IF NOT EXISTS orders_user ON orders(user_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS subs_user ON subscriptions(user_id, status);
 CREATE INDEX IF NOT EXISTS tests_subject ON tests(subject_id, is_published);
+CREATE TABLE IF NOT EXISTS payment_transactions (
+  id SERIAL PRIMARY KEY,
+  provider TEXT NOT NULL,
+  provider_trans_id TEXT NOT NULL,
+  order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  amount_uzs INTEGER NOT NULL,
+  state INTEGER NOT NULL DEFAULT 1,
+  reason INTEGER,
+  create_time BIGINT NOT NULL,
+  perform_time BIGINT NOT NULL DEFAULT 0,
+  cancel_time BIGINT NOT NULL DEFAULT 0,
+  UNIQUE (provider, provider_trans_id)
+);
+CREATE INDEX IF NOT EXISTS ptx_order ON payment_transactions(order_id);
+ALTER TABLE subscriptions ADD COLUMN IF NOT EXISTS order_id INTEGER;
+CREATE TABLE IF NOT EXISTS otp_codes (
+  phone TEXT PRIMARY KEY,
+  code_hash TEXT NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  last_sent TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 `;

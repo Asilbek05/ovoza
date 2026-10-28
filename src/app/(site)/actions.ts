@@ -10,6 +10,8 @@ import { clearUserSession, ensureGuestId, getCurrentUser, readGuestId, setUserSe
 import { getActiveSubscription } from "@/lib/access";
 import { claimGuestAttempts, expireIfOverdue, finalizeAttempt, getOwnedAttempt } from "@/lib/attempts";
 import { rateLimit, rateReset, waitText } from "@/lib/rate-limit";
+import { sendSms, smsConfigured } from "@/lib/sms";
+import { createHash, randomInt } from "crypto";
 
 type FormState = { ok: false; error: string; field?: string } | null;
 
@@ -196,4 +198,61 @@ export async function changePassword(_: ProfileState, form: FormData): Promise<P
   const db = await getDb();
   await db.update(s.users).set({ passwordHash: await bcrypt.hash(parsed.data, 10) }).where(eq(s.users.id, user.id));
   return { ok: true, message: "Parol almashtirildi" };
+}
+
+/* ───────── Password reset by SMS code ───────── */
+
+export type ResetResult = { ok: boolean; message: string; devCode?: string };
+const codeHash = (phone: string, code: string) => createHash("sha256").update(`${phone}:${code}:${process.env.AUTH_SECRET ?? "dev"}`).digest("hex");
+
+export async function requestResetCode(rawPhone: string): Promise<ResetResult> {
+  const phone = normPhone(String(rawPhone ?? ""));
+  if (!/^998\d{9}$/.test(phone)) return { ok: false, message: "Telefon raqamini toʻliq kiriting: +998 XX XXX XX XX" };
+  const wait = await rateLimit("reset-req", 5, 3600, phone);
+  if (wait) return { ok: false, message: waitText(wait) };
+  const wait2 = await rateLimit("reset-ip", 15, 3600);
+  if (wait2) return { ok: false, message: waitText(wait2) };
+  const live = process.env.NODE_ENV === "production" || smsConfigured();
+  if (live && !smsConfigured()) return { ok: false, message: "SMS xizmati sozlanmagan. Parolni tiklash uchun administratorga murojaat qiling (Aloqa sahifasi)." };
+
+  const db = await getDb();
+  const generic: ResetResult = { ok: true, message: "Agar bu raqam roʻyxatdan oʻtgan boʻlsa, 6 xonali kod SMS orqali yuborildi." };
+  const [u] = await db.select({ id: s.users.id }).from(s.users).where(eq(s.users.phone, phone));
+  if (!u) return generic; // never reveal which numbers exist
+
+  const [prev] = await db.select().from(s.otpCodes).where(eq(s.otpCodes.phone, phone));
+  if (prev && Date.now() - prev.lastSent.getTime() < 60_000) return { ok: false, message: "Kod yaqinda yuborilgan. 1 daqiqadan keyin qayta soʻrang." };
+
+  const code = String(randomInt(100000, 1000000));
+  const row = { codeHash: codeHash(phone, code), expiresAt: new Date(Date.now() + 10 * 60_000), attempts: 0, lastSent: new Date() };
+  await db.insert(s.otpCodes).values({ phone, ...row }).onConflictDoUpdate({ target: s.otpCodes.phone, set: row });
+
+  if (smsConfigured()) {
+    const r = await sendSms(phone, `ovoza: parolni tiklash kodi ${code}. Hech kimga bermang.`);
+    if (!r.ok) return { ok: false, message: "SMS yuborib boʻlmadi. Birozdan keyin qayta urinib koʻring." };
+    return generic;
+  }
+  // development without an SMS gateway: show the code on screen and in the server log
+  console.log(`[dev] ${phone} tiklash kodi: ${code}`);
+  return { ...generic, message: "Dev rejim: SMS ulanmagan, kod quyida koʻrsatildi.", devCode: code };
+}
+
+export async function confirmReset(rawPhone: string, code: string, password: string): Promise<ResetResult> {
+  const phone = normPhone(String(rawPhone ?? ""));
+  const pw = z.string().min(6, "Yangi parol kamida 6 belgi").max(72, "Parol 72 belgidan oshmasin").safeParse(password);
+  if (!pw.success) return { ok: false, message: pw.error.issues[0].message };
+  const wait = await rateLimit("reset-confirm", 10, 900, phone);
+  if (wait) return { ok: false, message: waitText(wait) };
+  const db = await getDb();
+  const [o] = await db.select().from(s.otpCodes).where(eq(s.otpCodes.phone, phone));
+  const bad: ResetResult = { ok: false, message: "Kod notoʻgʻri yoki muddati tugagan." };
+  if (!o || o.expiresAt.getTime() < Date.now() || o.attempts >= 5) return bad;
+  if (o.codeHash !== codeHash(phone, String(code ?? "").trim())) {
+    await db.update(s.otpCodes).set({ attempts: o.attempts + 1 }).where(eq(s.otpCodes.phone, phone));
+    return bad;
+  }
+  await db.update(s.users).set({ passwordHash: await bcrypt.hash(pw.data, 10) }).where(eq(s.users.phone, phone));
+  await db.delete(s.otpCodes).where(eq(s.otpCodes.phone, phone));
+  await rateReset("login", phone);
+  return { ok: true, message: "Parol almashtirildi. Endi yangi parol bilan kiring." };
 }

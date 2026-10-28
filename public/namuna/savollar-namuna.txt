@@ -1,0 +1,23 @@
+1. Tenglamaning ildizlarini toping: x² − 5x + 6 = 0
+A) 1 va 6
+B) 2 va 3
+C) −2 va −3
+D) 5 va 6
+Javob: B
+
+2. Arifmetik progressiyada a₁ = 2, d = 3. a₅ ni toping.
+A) 14  B) 17  C) 12  D) 15
+Javob: A
+
+3. Quyidagilardan qaysi biri tub son?
+A) 21
+B) 27
+*C) 29
+D) 33
+
+4) Suvning kimyoviy formulasi qaysi?
+A. H₂O
+B. CO₂
+C. NaCl
+D. O₂
+To'g'ri javob: A

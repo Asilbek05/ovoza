@@ -1,0 +1,4 @@
+{ "questions": [
+  { "text": "2 + 2 · 2 = ?", "options": ["8", "6", "4", "10"], "correct_index": 1, "topic": "Amallar tartibi" },
+  { "question": "Eng katta tub son 2 xonali?", "options": ["97", "99", "89"], "answer_index": 0 }
+] }

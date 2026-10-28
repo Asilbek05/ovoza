@@ -83,21 +83,21 @@ export async function seed(db: DB) {
     .values({
       questionId: q1[0].id,
       audioUrl: "/demo/izoh-kvadrat.wav",
-      audioDurationSec: 134,
+      audioDurationSec: 69.1,
       authorName: "Kamola Rahimova",
       note: "Viyet teoremasida yigʻindi −b/a = −(−4) = +4 boʻladi. Siz ishorani almashtirmagansiz, shuning uchun −1 va −3 chiqqan.",
     })
     .returning();
   await db.insert(s.explanationImages).values([
     { explanationId: ex.id, url: "/demo/qadam-1.svg", startSec: 0, caption: "Soddalashtirish", position: 1 },
-    { explanationId: ex.id, url: "/demo/qadam-2.svg", startSec: 40, caption: "Viyet teoremasi", position: 2 },
-    { explanationId: ex.id, url: "/demo/qadam-3.svg", startSec: 90, caption: "Tekshiruv", position: 3 },
+    { explanationId: ex.id, url: "/demo/qadam-2.svg", startSec: 22, caption: "Viyet teoremasi", position: 2 },
+    { explanationId: ex.id, url: "/demo/qadam-3.svg", startSec: 51, caption: "Tekshiruv", position: 3 },
   ]);
   await db.insert(s.similarQuestions).values({
     questionId: q1[0].id, text: "x² − 6x + 8 = 0 tenglamaning ildizlarini toping.", options: ["2 va 4", "−2 va −4", "1 va 8", "3 va 5"], correctIndex: 0,
   });
   await db.insert(s.explanations).values({
-    questionId: q1[2].id, audioUrl: "/demo/izoh-kvadrat.wav", audioDurationSec: 134, authorName: "Kamola Rahimova",
+    questionId: q1[2].id, audioUrl: "/demo/izoh-kvadrat.wav", audioDurationSec: 69.1, authorName: "Kamola Rahimova",
     note: "Pifagor teoremasi: c² = a² + b² = 36 + 64 = 100, demak c = 10. Tez yoʻl: 6–8–10 — bu 3–4–5 uchligining ikki barobari.",
   });
 
@@ -177,4 +177,14 @@ export async function seedExtra(db: DB) {
     ["HTML nima?", ["Veb-sahifalarni belgilash tili", "Maʼlumotlar bazasi", "Operatsion tizim", "Brauzer"], 0, "Internet"],
   ]);
   await db.insert(s.settings).values({ key: "seed_v2", value: "1" });
+}
+
+/** The demo audio used to be silence; this aligns older databases with the spoken version (runs once). */
+export async function seedDemoAudio(db: DB) {
+  const [done] = await db.select().from(s.settings).where(sql`${s.settings.key} = 'seed_v3'`);
+  if (done) return;
+  await db.update(s.explanations).set({ audioDurationSec: 69.1 }).where(sql`${s.explanations.audioUrl} = '/demo/izoh-kvadrat.wav'`);
+  await db.update(s.explanationImages).set({ startSec: 22 }).where(sql`${s.explanationImages.url} = '/demo/qadam-2.svg' and ${s.explanationImages.startSec} = 40`);
+  await db.update(s.explanationImages).set({ startSec: 51 }).where(sql`${s.explanationImages.url} = '/demo/qadam-3.svg' and ${s.explanationImages.startSec} = 90`);
+  await db.insert(s.settings).values({ key: "seed_v3", value: "1" });
 }

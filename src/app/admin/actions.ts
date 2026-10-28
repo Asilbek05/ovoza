@@ -12,7 +12,9 @@ import { aiAvailable, extractText, parseJson, parsePlain, parseWithAI, importedQ
 import { slugify } from "@/lib/utils";
 import { rateLimit, rateReset, waitText } from "@/lib/rate-limit";
 import { SETTING_DEFS } from "@/lib/settings-defs";
-import { createHash, timingSafeEqual } from "crypto";
+import { grantPlan, payOrder } from "@/lib/billing";
+import { createHash, randomBytes, timingSafeEqual } from "crypto";
+import bcrypt from "bcryptjs";
 
 export type ActionResult<T = undefined> = { ok: true; data?: T } | { ok: false; error: string };
 
@@ -397,22 +399,10 @@ export async function deletePlan(id: number): Promise<ActionResult> {
 
 /* ───────── Users & orders ───────── */
 
-async function activate(userId: string, planId: number) {
-  const db = await getDb();
-  const [plan] = await db.select().from(s.plans).where(eq(s.plans.id, planId));
-  if (!plan) throw new Error("Tarif topilmadi");
-  const now = new Date();
-  await db.insert(s.subscriptions).values({
-    userId, planId, startsAt: now, status: "active",
-    endsAt: plan.periodDays ? new Date(now.getTime() + plan.periodDays * 86400_000) : null,
-    testsLeft: plan.testsLimit,
-  });
-}
-
 export async function grantSubscription(userId: string, planId: number): Promise<ActionResult> {
   try {
     await assertAdmin();
-    await activate(userId, planId);
+    await grantPlan(userId, planId);
     revalidatePath("/admin", "layout");
     return { ok: true };
   } catch (e) {
@@ -439,8 +429,12 @@ export async function setOrderStatus(orderId: number, status: "paid" | "failed")
     const [o] = await db.select().from(s.orders).where(eq(s.orders.id, orderId));
     if (!o) return { ok: false, error: "Buyurtma topilmadi" };
     if (o.status === "paid") return { ok: false, error: "Bu buyurtma allaqachon toʻlangan" };
-    await db.update(s.orders).set({ status, paidAt: status === "paid" ? new Date() : null }).where(eq(s.orders.id, orderId));
-    if (status === "paid") await activate(o.userId, o.planId);
+    if (status === "paid") {
+      const r = await payOrder(orderId, "manual");
+      if (!r.ok) return { ok: false, error: r.error ?? "Xato" };
+    } else {
+      await db.update(s.orders).set({ status }).where(eq(s.orders.id, orderId));
+    }
     revalidatePath("/admin", "layout");
     return { ok: true };
   } catch (e) {
@@ -515,6 +509,23 @@ export async function duplicateTest(id: number): Promise<ActionResult<{ id: numb
     });
     revalidatePath("/admin", "layout");
     return { ok: true, data: { id: newId } };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/* ───────── Support: reset a user's password ───────── */
+
+export async function resetUserPassword(userId: string): Promise<ActionResult<{ password: string }>> {
+  try {
+    await assertAdmin();
+    const db = await getDb();
+    const alphabet = "abcdefghjkmnpqrstuvwxyz23456789"; // no look-alike characters
+    const bytes = randomBytes(9);
+    const password = Array.from(bytes, (b) => alphabet[b % alphabet.length]).join("");
+    const [u] = await db.update(s.users).set({ passwordHash: await bcrypt.hash(password, 10) }).where(eq(s.users.id, userId)).returning({ id: s.users.id });
+    if (!u) return { ok: false, error: "Foydalanuvchi topilmadi" };
+    return { ok: true, data: { password } };
   } catch (e) {
     return fail(e);
   }

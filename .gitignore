@@ -1,6 +1,6 @@
 node_modules
 .next
-.pglite
+.pglite*
 .env.local
 public/uploads
 next-env.d.ts

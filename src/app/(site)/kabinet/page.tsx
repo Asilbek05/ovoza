@@ -4,6 +4,7 @@ import { desc, eq } from "drizzle-orm";
 import { ArrowRight, Clock, LogOut, Settings, Target, Trophy, ListChecks } from "lucide-react";
 import { getUserStats } from "@/lib/stats";
 import { getSettings } from "@/lib/settings";
+import { paymentLinks } from "@/lib/payments";
 import { cn } from "@/lib/utils";
 import { getDb, schema as s } from "@/db";
 import { getCurrentUser } from "@/lib/session";
@@ -17,7 +18,7 @@ export const metadata = { title: "Kabinet" };
 export default async function Cabinet({ searchParams }: { searchParams: Promise<{ buyurtma?: string }> }) {
   const user = await getCurrentUser();
   if (!user) redirect("/kirish?next=/kabinet");
-  const { buyurtma } = await searchParams;
+  await searchParams;
   const db = await getDb();
   const sub = await getActiveSubscription(user.id);
   const attempts = await db
@@ -38,6 +39,8 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
   const pending = orders.find((x) => x.o.status === "pending");
   const stats = await getUserStats(user.id);
   const settings = await getSettings();
+  const links = pending ? paymentLinks({ id: pending.o.id, amountUzs: pending.o.amountUzs }) : {};
+  const online = Boolean(links.click || links.payme);
 
   return (
     <div className="container-page pt-6 pb-10">
@@ -52,14 +55,20 @@ export default async function Cabinet({ searchParams }: { searchParams: Promise<
         </div>
       </div>
 
-      {buyurtma && pending ? (
+      {pending ? (
         <div className="mb-6 rounded-[20px] border-2 border-accent bg-accent-soft p-6">
           <p className="font-display text-xl font-bold">Buyurtma qabul qilindi: {pending.plan} · {formatPrice(pending.o.amountUzs)}</p>
-          <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">Click va Payme orqali toʻlov tez orada ulanadi. Hozircha quyidagi usulda toʻlang — tasdiqlangach obuna avtomatik ochiladi.</p>
+          <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">{online ? "Quyidagi tugma orqali toʻlang — toʻlov tushishi bilan obuna avtomatik ochiladi." : "Click va Payme tez orada ulanadi. Hozircha quyidagi usulda toʻlang — tasdiqlangach obuna avtomatik ochiladi."}</p>
+          {online ? (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {links.click ? <Button asChild variant="primary" size="lg"><a href={links.click}>Click orqali toʻlash</a></Button> : null}
+              {links.payme ? <Button asChild variant="ink" size="lg"><a href={links.payme}>Payme orqali toʻlash</a></Button> : null}
+            </div>
+          ) : null}
           <dl className="mt-4 grid gap-2 rounded-[16px] bg-surface p-4 text-[15px] sm:grid-cols-2">
             <div><dt className="text-[13px] font-semibold text-muted">Buyurtma raqami</dt><dd className="font-display text-xl font-bold">#{pending.o.id}</dd></div>
             <div><dt className="text-[13px] font-semibold text-muted">Summa</dt><dd className="font-display text-xl font-bold">{formatPrice(pending.o.amountUzs)}</dd></div>
-            {settings.payment_card ? <div><dt className="text-[13px] font-semibold text-muted">Karta</dt><dd className="font-display text-xl font-bold tabular-nums">{settings.payment_card}</dd>{settings.payment_holder ? <dd className="text-[13px] text-muted">{settings.payment_holder}</dd> : null}</div> : null}
+            {!online && settings.payment_card ? <div><dt className="text-[13px] font-semibold text-muted">Karta</dt><dd className="font-display text-xl font-bold tabular-nums">{settings.payment_card}</dd>{settings.payment_holder ? <dd className="text-[13px] text-muted">{settings.payment_holder}</dd> : null}</div> : null}
             <div><dt className="text-[13px] font-semibold text-muted">Izohga yozing</dt><dd className="font-semibold">Buyurtma #{pending.o.id} · +{user.phone}</dd></div>
           </dl>
           {settings.site_telegram ? <p className="mt-3 text-[15px]">Chekni yuboring: <a href={settings.site_telegram} target="_blank" rel="noopener noreferrer" className="font-bold text-primary underline underline-offset-2">Telegram</a></p> : settings.site_phone ? <p className="mt-3 text-[15px]">Savol boʻlsa: <b>{settings.site_phone}</b></p> : null}

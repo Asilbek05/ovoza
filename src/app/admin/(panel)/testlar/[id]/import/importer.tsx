@@ -61,6 +61,10 @@ export function Importer({ testId, ai }: { testId: number; ai: boolean }) {
 
   return (
     <div className="space-y-5">
+      <p className="text-[14px] text-muted">
+        Namuna fayllar: <a className="font-semibold text-primary underline underline-offset-2" href="/namuna/savollar-namuna.txt" download>matn (.txt)</a> ·{" "}
+        <a className="font-semibold text-primary underline underline-offset-2" href="/namuna/savollar-namuna.json" download>JSON</a>. To‘g‘ri javob «Javob: B», «*C) ...» yoki JSON orqali belgilanadi; Word/PDF murakkab boʻlsa AI ishlatiladi.
+      </p>
       <Card className="p-5 sm:p-6">
         <Tabs value={mode} onValueChange={(v) => setMode(v as "text" | "file")}>
           <TabsList><TabsTrigger value="text">Matn joylash</TabsTrigger><TabsTrigger value="file">Fayl yuklash</TabsTrigger></TabsList>

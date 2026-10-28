@@ -69,6 +69,8 @@ export function parsePlain(raw: string): ImportedQuestion[] {
       correct = LETTERS.indexOf(ans[1].toUpperCase());
       body = body.slice(0, ans.index).trim();
     }
+    // "*C) 29" marks the right answer before the label — move the star behind it
+    body = body.replace(/(^|\s)\*\s*([A-F])\s*([).])/g, "$1$2$3 *");
     const parts = body.split(/(?:^|\s|\n)([A-F])\s*[).]\s+/);
     if (parts.length < 5) continue;
     const qText = parts[0].trim();

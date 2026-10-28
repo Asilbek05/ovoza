@@ -10,7 +10,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   if (await getCurrentUser()) redirect(next || "/kabinet");
   return (
     <AuthCard mode="login" next={next}>
-      <p className="mt-6 text-center text-[15px] text-muted">Hisobingiz yoʻqmi? <Link href={`/royxat${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="font-bold text-primary hover:underline">Roʻyxatdan oʻting</Link></p>
+      <p className="mt-5 text-center text-[15px]"><Link href="/tiklash" className="font-semibold text-ink-2 hover:text-primary hover:underline">Parolni unutdingizmi?</Link></p>
+      <p className="mt-3 text-center text-[15px] text-muted">Hisobingiz yoʻqmi? <Link href={`/royxat${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="font-bold text-primary hover:underline">Roʻyxatdan oʻting</Link></p>
     </AuthCard>
   );
 }

@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, AudioLines, Check, Clock, ImagePlus, Plus, Trash
 import type { Question } from "@/db/schema";
 import { saveExplanation, uploadMedia } from "../../../actions";
 import { useRun } from "@/components/admin/use-run";
+import { AudioRecorder } from "@/components/admin/audio-recorder";
 import { ExplanationPlayer, type PlayerImage } from "@/components/player/explanation-player";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/misc";
@@ -36,7 +37,7 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
   const { run, pending } = useRun();
   const dirty = JSON.stringify(st) !== JSON.stringify(initial);
 
-  async function upload(files: FileList | File[], kind: "audio" | "image") {
+  async function upload(files: FileList | File[], kind: "audio" | "image", knownDuration?: number) {
     setUploading(kind);
     try {
       for (const file of Array.from(files)) {
@@ -47,7 +48,7 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
         if (!r.ok) { toast.error(`${file.name}: ${r.error}`); continue; }
         const url = r.data!.url;
         if (kind === "audio") {
-          const d = await measure(url);
+          const d = knownDuration ?? (await measure(url));
           setSt((x) => ({ ...x, audioUrl: url, audioDurationSec: d }));
           toast.success("Audio yuklandi");
         } else {
@@ -86,7 +87,7 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
             <span className="flex size-10 items-center justify-center rounded-2xl bg-primary text-white"><AudioLines className="size-5" /></span>
             <div>
               <h2 className="font-display text-xl font-bold">1. Audio</h2>
-              <p className="text-[13px] text-muted">mp3, m4a, ogg, wav · 20 MB gacha</p>
+              <p className="text-[13px] text-muted">Mikrofondan yozing yoki fayl yuklang: mp3, m4a, ogg, wav · 20 MB gacha</p>
             </div>
           </div>
           {st.audioUrl ? (
@@ -95,9 +96,12 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
               <span className="min-w-0 flex-1 truncate text-[15px] font-semibold">{st.audioUrl.split("/").pop()}</span>
               <span className="text-sm font-semibold text-muted">{formatDuration(st.audioDurationSec)}</span>
               <Button variant="outline" size="sm" onClick={() => audioInput.current?.click()} disabled={!!uploading}>Almashtirish</Button>
+              <AudioRecorder label="Qayta yozish" disabled={!!uploading} onDone={(f, d) => upload([f], "audio", d)} />
               <Button variant="ghost" size="icon-sm" aria-label="Audioni olib tashlash" onClick={() => setSt({ ...st, audioUrl: null, audioDurationSec: null })}><Trash2 /></Button>
             </div>
           ) : (
+            <div className="space-y-3">
+            <AudioRecorder disabled={!!uploading} onDone={(f, d) => upload([f], "audio", d)} />
             <button
               type="button"
               onClick={() => audioInput.current?.click()}
@@ -106,8 +110,9 @@ export function ExplanationEditor({ question, initial, prevId, nextId }: { quest
               className="flex w-full flex-col items-center gap-2 rounded-[16px] border-2 border-dashed border-primary-mid/60 bg-bg px-6 py-10 transition hover:border-primary"
             >
               <Upload className="size-6 text-primary" />
-              <span className="font-display text-lg font-bold">{uploading === "audio" ? "Yuklanmoqda…" : "Ustoz audiosini tashlang yoki tanlang"}</span>
+              <span className="font-display text-lg font-bold">{uploading === "audio" ? "Yuklanmoqda…" : "yoki tayyor audioni tashlang / tanlang"}</span>
             </button>
+            </div>
           )}
           <input ref={audioInput} type="file" hidden accept="audio/*,.mp3,.m4a,.ogg,.wav,.webm" onChange={(e) => e.target.files?.length && upload([e.target.files[0]], "audio")} />
         </Card>
