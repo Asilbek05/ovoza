@@ -38,7 +38,7 @@ export const SUBJECT_COLORS = {
   yellow: { bg: "bg-accent-soft", icon: "bg-accent text-ink", text: "text-accent-ink" },
   green: { bg: "bg-success-soft", icon: "bg-success text-white", text: "text-success-ink" },
   coral: { bg: "bg-danger-soft", icon: "bg-[#ef7a5a] text-white", text: "text-danger-ink" },
-  violet: { bg: "bg-[#ece8f7]", icon: "bg-[#5b49a8] text-white", text: "text-[#43357f]" },
+  violet: { bg: "bg-[#fbe6f1]", icon: "bg-[#b0357f] text-white", text: "text-[#7e2058]" },
   teal: { bg: "bg-[#dff1f4]", icon: "bg-[#1b7f93] text-white", text: "text-[#13596a]" },
 } as const;
 export type SubjectColor = keyof typeof SUBJECT_COLORS;

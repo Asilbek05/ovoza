@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
  * Same geometry as src/app/icon.svg — keep them in sync.
  */
 export function LogoMark({ className, tone = "dark" }: { className?: string; tone?: "dark" | "light" }) {
-  const bg = tone === "dark" ? "#0E4A40" : "#D4F04F";
-  const fg = tone === "dark" ? "#D4F04F" : "#0E4A40";
+  const bg = tone === "dark" ? "#3B1FA8" : "#FF7A3D";
+  const fg = tone === "dark" ? "#FF7A3D" : "#3B1FA8";
   return (
     <svg viewBox="0 0 64 64" className={cn("size-9 shrink-0", className)} aria-hidden>
       <rect width="64" height="64" rx="18" fill={bg} />

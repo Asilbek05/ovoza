@@ -46,7 +46,7 @@ export function HeroChat() {
           <span className="rounded-[12px] bg-primary-soft px-4 py-2.5 text-sm font-bold text-primary-deep">Oʻxshash savol</span>
         </div>
       </div>
-      <span className="absolute -top-1 -left-2 -rotate-[4deg] rounded-xl bg-accent px-3.5 py-2 text-[15px] font-bold shadow-[0_12px_24px_-12px_rgb(7_47_41/0.5)] sm:-left-6">audio + 3 ta yechim rasmi</span>
+      <span className="absolute -top-1 -left-2 -rotate-[4deg] rounded-xl bg-accent px-3.5 py-2 text-[15px] font-bold shadow-[0_12px_24px_-12px_rgb(30_15_92/0.5)] sm:-left-6">audio + 3 ta yechim rasmi</span>
     </div>
   );
 }

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: { default: "ovoza — xatoingizni ustoz ovoz bilan tushuntiradi", template: "%s · ovoza" },
   description: "Attestatsiya va milliy sertifikat demo testlari. Har bir xato savolga ustozning ovozli tushuntirishi va yechim rasmlari.",
 };
-export const viewport: Viewport = { themeColor: "#0E4A40", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#3B1FA8", width: "device-width", initialScale: 1 };
 export const dynamic = "force-dynamic";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
